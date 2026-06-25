@@ -11,7 +11,13 @@ import {
   Clock, 
   MapPin, 
   Star,
-  Users
+  Users,
+  Tv,
+  Bug,
+  Scissors,
+  Baby,
+  Truck,
+  Car
 } from 'lucide-react';
 import { MOCK_SERVICES } from '../mockData';
 
@@ -31,6 +37,12 @@ export default function LandingPage({ onOpenAuth, onSelectCategoryPreview }: Lan
       case 'Shirt': return <Shirt className={className} />;
       case 'ShoppingBag': return <ShoppingBag className={className} />;
       case 'BookOpen': return <BookOpen className={className} />;
+      case 'Tv': return <Tv className={className} />;
+      case 'Bug': return <Bug className={className} />;
+      case 'Scissors': return <Scissors className={className} />;
+      case 'Baby': return <Baby className={className} />;
+      case 'Truck': return <Truck className={className} />;
+      case 'Car': return <Car className={className} />;
       default: return <BookOpen className={className} />;
     }
   };

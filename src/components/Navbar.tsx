@@ -62,40 +62,44 @@ export default function Navbar({
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-4">
-            {currentUser ? (
+           {currentUser ? (
               <>
-                {/* Switch between Client/Admin for easy testing */}
-                <div className="flex bg-slate-100 p-1 rounded-xl mr-2 gap-1 border border-slate-200/50">
-                  <button
-                    onClick={() => handleNavClick('client')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                      currentView === 'client'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-500 hover:text-slate-900'
-                    }`}
-                  >
-                    <UserCheck className="h-3.5 w-3.5" />
-                    Resident Portal
-                  </button>
-                  <button
-                    onClick={() => handleNavClick('admin')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                      currentView === 'admin'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-500 hover:text-slate-900'
-                    }`}
-                  >
-                    <ShieldAlert className="h-3.5 w-3.5" />
-                    Dispatcher (Admin)
-                  </button>
-                </div>
+                {/* Switch between Client/Admin - Only available for actual administrators */}
+                {currentUser.role === 'admin' && (
+                  <div className="flex bg-slate-100 p-1 rounded-xl mr-2 gap-1 border border-slate-200/50">
+                    <button
+                      onClick={() => handleNavClick('client')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                        currentView === 'client'
+                          ? 'bg-white text-slate-900 shadow-sm'
+                          : 'text-slate-500 hover:text-slate-900'
+                      }`}
+                    >
+                      <UserCheck className="h-3.5 w-3.5" />
+                      Resident Portal
+                    </button>
+                    <button
+                      onClick={() => handleNavClick('admin')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                        currentView === 'admin'
+                          ? 'bg-white text-slate-900 shadow-sm'
+                          : 'text-slate-500 hover:text-slate-900'
+                      }`}
+                    >
+                      <ShieldAlert className="h-3.5 w-3.5" />
+                      Dispatcher (Admin)
+                    </button>
+                  </div>
+                )}
 
                 {/* Logged in User Profile Info */}
                 <div className="flex items-center gap-3 pl-2 border-l border-slate-200">
                   <div className="text-right">
-                    <p className="text-xs font-semibold text-slate-800">{currentUser.name}</p>
+                    <p className="text-xs font-semibold text-slate-800">
+                      {currentUser.name ? currentUser.name.trim().split(/\s+/)[0] : 'Resident'}
+                    </p>
                     <p className="text-[10px] text-slate-400 font-mono">
-                      {currentUser.role === 'admin' ? 'Admin Panel' : currentUser.estateName || 'Resident'}
+                      {currentUser.role === 'admin' ? 'Admin Panel' : currentUser.houseDetails || 'Resident'}
                     </p>
                   </div>
                   <button
@@ -158,38 +162,103 @@ export default function Navbar({
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden border-b border-slate-100 bg-white px-4 pt-2 pb-4 space-y-2 animate-fade-in">
+        <div className="md:hidden border-b border-slate-100 bg-white px-4 pt-2 pb-4 space-y-3 animate-fade-in">
           {currentUser ? (
-            <div className="space-y-3 pt-2">
-              <div className="px-3 py-2 bg-slate-50 rounded-xl">
-                <p className="text-sm font-semibold text-slate-800">{currentUser.name}</p>
-                <p className="text-xs text-slate-400 font-mono">
-                  {currentUser.role === 'admin' ? 'Estate Admin' : `${currentUser.estateName}, ${currentUser.houseDetails}`}
-                </p>
+            <div className="space-y-4 pt-2">
+              
+              {/* Individual Account Management Details */}
+              <div className="p-4 bg-slate-950 text-slate-200 rounded-2xl border border-slate-800 space-y-3 shadow-md">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span className="text-[10px] font-black tracking-widest text-teal-400 uppercase">
+                    Account Profile
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-500">
+                    ID: #{currentUser.id.substring(0, 5)}
+                  </span>
+                </div>
+                
+                <div className="space-y-2">
+                  <div>
+                    <span className="block text-[9px] text-slate-500 uppercase font-bold">Official Name</span>
+                    <span className="text-sm font-semibold text-white">{currentUser.name}</span>
+                  </div>
+                  
+                  <div>
+                    <span className="block text-[9px] text-slate-500 uppercase font-bold">Email Address</span>
+                    <span className="text-xs text-slate-300 font-mono">{currentUser.email}</span>
+                  </div>
+
+                  {currentUser.role !== 'admin' ? (
+                    <>
+                      <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-900/50 mt-1">
+                        <div>
+                          <span className="block text-[9px] text-slate-500 uppercase font-bold">Sector Location</span>
+                          <span className="text-xs text-teal-300 font-semibold">{currentUser.houseDetails || 'Upper Fedha'}</span>
+                        </div>
+                        <div>
+                          <span className="block text-[9px] text-slate-500 uppercase font-bold">Phone Number</span>
+                          <span className="text-xs text-slate-300 font-mono">{currentUser.phone || '+254 700 000 000'}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="pt-2 border-t border-slate-900 flex items-center justify-between text-[10px]">
+                        <span className="text-slate-400 font-semibold flex items-center gap-1">
+                          <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse inline-block" />
+                          Verified Resident
+                        </span>
+                        <span className="text-slate-500 font-mono">Status: Cleared</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-900/50 mt-1">
+                        <div>
+                          <span className="block text-[9px] text-slate-500 uppercase font-bold">Access Level</span>
+                          <span className="text-xs text-indigo-300 font-semibold">Authorized Admin</span>
+                        </div>
+                        <div>
+                          <span className="block text-[9px] text-slate-500 uppercase font-bold">Security Pass</span>
+                          <span className="text-xs text-slate-300 font-mono">Tier-1 Terminal</span>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 border-t border-slate-900 flex items-center justify-between text-[10px]">
+                        <span className="text-slate-400 font-semibold flex items-center gap-1">
+                          <span className="h-1.5 w-1.5 bg-indigo-500 rounded-full animate-pulse inline-block" />
+                          Dispatcher Console Active
+                        </span>
+                        <span className="text-slate-500 font-mono">Status: Secure</span>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => handleNavClick('client')}
-                  className={`w-full py-2 px-3 rounded-lg text-center font-medium text-xs transition-colors cursor-pointer ${
-                    currentView === 'client'
-                      ? 'bg-slate-900 text-white'
-                      : 'bg-slate-50 text-slate-600 border hover:bg-slate-100'
-                  }`}
-                >
-                  Resident View
-                </button>
-                <button
-                  onClick={() => handleNavClick('admin')}
-                  className={`w-full py-2 px-3 rounded-lg text-center font-medium text-xs transition-colors cursor-pointer ${
-                    currentView === 'admin'
-                      ? 'bg-slate-900 text-white'
-                      : 'bg-slate-50 text-slate-600 border hover:bg-slate-100'
-                  }`}
-                >
-                  Dispatcher View
-                </button>
-              </div>
+              {/* View Switcher Tabs - Only visible if authorized as Admin */}
+              {currentUser.role === 'admin' && (
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => handleNavClick('client')}
+                    className={`w-full py-2 px-3 rounded-lg text-center font-medium text-xs transition-colors cursor-pointer ${
+                      currentView === 'client'
+                        ? 'bg-slate-900 text-white'
+                        : 'bg-slate-50 text-slate-600 border hover:bg-slate-100'
+                    }`}
+                  >
+                    Resident View
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('admin')}
+                    className={`w-full py-2 px-3 rounded-lg text-center font-medium text-xs transition-colors cursor-pointer ${
+                      currentView === 'admin'
+                        ? 'bg-slate-900 text-white'
+                        : 'bg-slate-50 text-slate-600 border hover:bg-slate-100'
+                    }`}
+                  >
+                    Dispatcher View
+                  </button>
+                </div>
+              )}
 
               <button
                 onClick={() => {

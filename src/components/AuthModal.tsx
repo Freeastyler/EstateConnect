@@ -17,6 +17,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
   const [estateName, setEstateName] = useState(ESTATE_NAMES[0]);
   const [houseDetails, setHouseDetails] = useState('');
   const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState<'male' | 'female' | 'other'>('male');
   const [error, setError] = useState('');
 
   if (!isOpen) return null;
@@ -37,19 +38,24 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
     // Standard simulation
     if (isLogin) {
-      if (email.toLowerCase() === 'admin@estateconnect.com' || email.toLowerCase() === 'admin@estateease.com' || email.toLowerCase() === 'admin') {
+      if (
+        (email.toLowerCase() === 'iankariri2@gmail.com' && password === 'Railways21323') ||
+        email.toLowerCase() === 'admin@estateconnect.com' ||
+        email.toLowerCase() === 'admin@estateease.com' ||
+        email.toLowerCase() === 'admin'
+      ) {
         onAuthSuccess({
           id: 'admin-1',
-          name: 'Estate Dispatcher',
-          email: 'admin@estateconnect.com',
+          name: email.toLowerCase() === 'iankariri2@gmail.com' ? 'Ian Kariri (Admin)' : 'Estate Dispatcher',
+          email: email.toLowerCase() === 'iankariri2@gmail.com' ? 'iankariri2@gmail.com' : 'admin@estateconnect.com',
           role: 'admin'
-        }, 'Signed in as Estate Admin Dispatcher!');
+        }, `Signed in as Estate Admin Dispatcher! Welcome, ${email.toLowerCase() === 'iankariri2@gmail.com' ? 'Ian' : 'Admin'}.`);
         onClose();
         return;
       }
 
       // Default demo resident account
-      if (email.toLowerCase() === 'ian@estateconnect.com' || email.toLowerCase() === 'ian@estateease.com' || email.toLowerCase() === 'ian' || email.toLowerCase() === 'iankariri2@gmail.com') {
+      if (email.toLowerCase() === 'ian@estateconnect.com' || email.toLowerCase() === 'ian@estateease.com' || email.toLowerCase() === 'ian' || (email.toLowerCase() === 'iankariri2@gmail.com' && password !== 'Railways21323')) {
         onAuthSuccess({
           id: 'user-1',
           name: 'Ian Kariri',
@@ -84,7 +90,8 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
         role: 'resident',
         estateName,
         houseDetails,
-        phone
+        phone,
+        gender
       }, `Welcome to EstateConnect, ${name}! Your account is created.`);
       onClose();
     }
@@ -138,26 +145,21 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
           {isLogin && (
             <div className="p-4 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-2">
               <span className="text-[11px] font-semibold text-indigo-800 uppercase tracking-wider block">
-                ⚡ Demo Quick-Pass Access
+                ⚡ Resident Quick-Pass Access
               </span>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-2">
                 <button
                   type="button"
                   onClick={loadDemoResident}
                   className="flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-700 font-medium text-xs rounded-lg transition-colors cursor-pointer"
                 >
                   <User className="h-3.5 w-3.5" />
-                  Resident Account
-                </button>
-                <button
-                  type="button"
-                  onClick={loadDemoAdmin}
-                  className="flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-700 font-medium text-xs rounded-lg transition-colors cursor-pointer"
-                >
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  Admin Dispatcher
+                  Resident Account (Ian)
                 </button>
               </div>
+              <p className="text-[10px] text-indigo-600 italic">
+                * Dispatcher Admin Account is restricted &amp; requires credential sign-in to ensure exclusive access control.
+              </p>
             </div>
           )}
 
@@ -179,19 +181,34 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
                 </div>
               </div>
 
-              {/* Phone */}
-              <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">Phone Number</label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                  <input
-                    type="tel"
-                    required
-                    placeholder="+254 799 111 222"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="pl-10 pr-4 py-2 w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50"
-                  />
+              {/* Phone & Gender */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 mb-1">Phone Number</label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+254 799 111 222"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="pl-10 pr-4 py-2 w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 mb-1">Gender</label>
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value as 'male' | 'female' | 'other')}
+                    className="px-4 py-2 w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50 appearance-none cursor-pointer font-medium"
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
                 </div>
               </div>
 
@@ -215,15 +232,18 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
                 {/* House details */}
                 <div>
-                  <label className="block text-xs font-medium text-slate-700 mb-1">House/Apt No.</label>
-                  <input
-                    type="text"
+                  <label className="block text-xs font-medium text-slate-700 mb-1">House/Apartment Sector</label>
+                  <select
                     required
-                    placeholder="Block C, Apt 4B"
                     value={houseDetails}
                     onChange={(e) => setHouseDetails(e.target.value)}
-                    className="px-4 py-2 w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50"
-                  />
+                    className="px-4 py-2 w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50 appearance-none cursor-pointer"
+                  >
+                    <option value="">Select Area Sector...</option>
+                    <option value="Upper Fedha">Upper Fedha</option>
+                    <option value="Lower Fedha">Lower Fedha</option>
+                    <option value="Kwandege/Nyayo">Kwandege/Nyayo</option>
+                  </select>
                 </div>
               </div>
             </div>

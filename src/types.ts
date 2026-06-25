@@ -43,6 +43,7 @@ export interface User {
   estateName?: string;
   houseDetails?: string;
   phone?: string;
+  gender?: 'male' | 'female' | 'other';
 }
 
 export interface Provider {

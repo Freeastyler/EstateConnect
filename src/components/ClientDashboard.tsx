@@ -20,7 +20,13 @@ import {
   Phone,
   Grid,
   Filter,
-  Check
+  Check,
+  Tv,
+  Bug,
+  Scissors,
+  Baby,
+  Car,
+  Bell
 } from 'lucide-react';
 import { Booking, User as UserType, ServiceCategory, ServiceItem } from '../types';
 import { MOCK_SERVICES } from '../mockData';
@@ -28,6 +34,16 @@ import { MOCK_SERVICES } from '../mockData';
 interface ClientDashboardProps {
   currentUser: UserType;
   bookings: Booking[];
+  messages: Array<{
+    id: string;
+    userId: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    read: boolean;
+    sender: string;
+  }>;
+  onMarkMessageAsRead?: (id: string) => void;
   onAddBooking: (booking: {
     categoryName: string;
     serviceName: string;
@@ -47,11 +63,16 @@ interface ClientDashboardProps {
 export default function ClientDashboard({
   currentUser,
   bookings,
+  messages,
+  onMarkMessageAsRead,
   onAddBooking,
   onCancelBooking,
   selectedCategoryPreview,
   onClearCategoryPreview
 }: ClientDashboardProps) {
+  // Inbox notices collapsible state
+  const [isInboxOpen, setIsInboxOpen] = useState(true);
+  
   // Selected category in the service catalog (default to 'cleaning' or the landing-page prefocused category)
   const [activeCategory, setActiveCategory] = useState<string>('cleaning');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -66,6 +87,12 @@ export default function ClientDashboard({
   const [contactPhone, setContactPhone] = useState(currentUser.phone || '');
   const [specialNotes, setSpecialNotes] = useState('');
   const [bookingFilter, setBookingFilter] = useState<'all' | 'active' | 'completed'>('all');
+
+  // Custom Service Request states
+  const [customServiceName, setCustomServiceName] = useState('');
+  const [customServiceDate, setCustomServiceDate] = useState('');
+  const [customServiceTime, setCustomServiceTime] = useState('10:00 AM');
+  const [customServiceNotes, setCustomServiceNotes] = useState('');
 
   // Sync selectedCategoryPreview from landing page click
   useEffect(() => {
@@ -112,6 +139,69 @@ export default function ClientDashboard({
     handleCloseBooking();
   };
 
+  const handleCustomRequestSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customServiceName || !customServiceDate || !customServiceNotes) {
+      return;
+    }
+
+    onAddBooking({
+      categoryName: 'Custom Request',
+      serviceName: customServiceName,
+      date: customServiceDate,
+      time: customServiceTime,
+      notes: customServiceNotes,
+      price: 0,
+      estateName: estateLocation,
+      houseDetails: houseNumber || currentUser.houseDetails || 'Upper Fedha',
+      phone: contactPhone || currentUser.phone || '+254 700 000 000'
+    });
+
+    setCustomServiceName('');
+    setCustomServiceDate('');
+    setCustomServiceNotes('');
+  };
+
+  const getCategoryTabStyles = (id: string, isActive: boolean) => {
+    if (!isActive) return 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/60 border-transparent';
+    switch (id) {
+      case 'cleaning': return 'bg-teal-50 border-t-2 border-teal-500 text-teal-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'plumbing': return 'bg-blue-50 border-t-2 border-blue-500 text-blue-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'electrical': return 'bg-amber-50 border-t-2 border-amber-500 text-amber-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'laundry': return 'bg-purple-50 border-t-2 border-purple-500 text-purple-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'grocery': return 'bg-emerald-50 border-t-2 border-emerald-500 text-emerald-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'tuition': return 'bg-[#FAF6F0] border-t-2 border-[#8B5E3C] text-[#5C3D2E] font-bold border-x border-slate-200/60 shadow-sm';
+      case 'tv-mounting': return 'bg-indigo-50 border-t-2 border-indigo-500 text-indigo-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'pest-control': return 'bg-emerald-50/60 border-t-2 border-emerald-600 text-emerald-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'beauty-care': return 'bg-cyan-50 border-t-2 border-cyan-500 text-cyan-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'childcare': return 'bg-orange-50 border-t-2 border-orange-500 text-orange-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'moving-transport': return 'bg-slate-100 border-t-2 border-slate-600 text-slate-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'water-utility': return 'bg-sky-50 border-t-2 border-sky-500 text-sky-800 font-bold border-x border-slate-200/60 shadow-sm';
+      case 'car-services': return 'bg-blue-50/60 border-t-2 border-blue-600 text-blue-950 font-bold border-x border-slate-200/60 shadow-sm';
+      default: return 'bg-slate-50 border-t-2 border-slate-500 text-slate-800 font-bold border-x border-slate-200/60 shadow-sm';
+    }
+  };
+
+  const getCategoryIconColor = (id: string, isActive: boolean) => {
+    if (!isActive) return 'text-slate-400';
+    switch (id) {
+      case 'cleaning': return 'text-teal-600';
+      case 'plumbing': return 'text-blue-600';
+      case 'electrical': return 'text-amber-600';
+      case 'laundry': return 'text-purple-600';
+      case 'grocery': return 'text-emerald-600';
+      case 'tuition': return 'text-[#8B5E3C]';
+      case 'tv-mounting': return 'text-indigo-600';
+      case 'pest-control': return 'text-emerald-600';
+      case 'beauty-care': return 'text-cyan-600';
+      case 'childcare': return 'text-orange-600';
+      case 'moving-transport': return 'text-slate-600';
+      case 'water-utility': return 'text-sky-600';
+      case 'car-services': return 'text-blue-700';
+      default: return 'text-slate-600';
+    }
+  };
+
   // Filter bookings for this user
   const userBookings = bookings.filter(b => b.residentId === currentUser.id);
 
@@ -130,6 +220,12 @@ export default function ClientDashboard({
       case 'Shirt': return <Shirt className={className} />;
       case 'ShoppingBag': return <ShoppingBag className={className} />;
       case 'BookOpen': return <BookOpen className={className} />;
+      case 'Tv': return <Tv className={className} />;
+      case 'Bug': return <Bug className={className} />;
+      case 'Scissors': return <Scissors className={className} />;
+      case 'Baby': return <Baby className={className} />;
+      case 'Truck': return <Truck className={className} />;
+      case 'Car': return <Car className={className} />;
       default: return <BookOpen className={className} />;
     }
   };
@@ -145,7 +241,7 @@ export default function ClientDashboard({
           <div>
             <span className="theme-sub-label">Resident Account</span>
             <h1 className="text-3xl sm:text-4xl font-display font-black text-slate-900 uppercase tracking-tight mt-1">
-              {currentUser.name}
+              Welcome back, {currentUser.name ? currentUser.name.trim().split(/\s+/)[0] : 'Resident'}
             </h1>
             <p className="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5 text-teal-600 shrink-0" />
@@ -168,6 +264,80 @@ export default function ClientDashboard({
             </div>
           </div>
         </div>
+
+        {/* Inbox / Announcements Desk */}
+        {messages && messages.filter(m => m.userId === currentUser.id).length > 0 && (() => {
+          const userMessages = messages.filter(m => m.userId === currentUser.id);
+          const unreadCount = userMessages.filter(m => !m.read).length;
+          return (
+            <div className="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm space-y-4">
+              <div 
+                onClick={() => setIsInboxOpen(!isInboxOpen)}
+                className="flex items-center justify-between cursor-pointer group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="relative p-2.5 bg-indigo-50 rounded-xl text-indigo-600">
+                    <Bell className="h-5 w-5" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 h-5 w-5 bg-rose-500 text-white font-bold text-[10px] rounded-full flex items-center justify-center border-2 border-white animate-pulse">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider font-display">
+                      Resident Inbox &amp; Notices
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      {unreadCount > 0 
+                        ? `You have ${unreadCount} unread official message${unreadCount > 1 ? 's' : ''}` 
+                        : 'All official notices and congratulations read'}
+                    </p>
+                  </div>
+                </div>
+                <button className="text-slate-500 group-hover:text-slate-800 transition-colors text-xs font-semibold px-3 py-1 bg-slate-50 rounded-lg border border-slate-200">
+                  {isInboxOpen ? 'Collapse Notices' : 'Expand Inbox'}
+                </button>
+              </div>
+
+              {isInboxOpen && (
+                <div className="pt-4 border-t border-slate-100 space-y-3 divide-y divide-slate-100">
+                  {userMessages.map((msg) => (
+                    <div key={msg.id} className={`pt-3 first:pt-0 ${!msg.read ? 'bg-indigo-50/20 -mx-4 px-4 py-2.5 rounded-xl border-l-4 border-indigo-500' : ''}`}>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-slate-800">{msg.title}</span>
+                            {!msg.read && (
+                              <span className="bg-indigo-600 text-white font-mono text-[9px] font-black uppercase px-1.5 py-0.5 rounded">NEW</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-600 leading-relaxed max-w-3xl">
+                            {msg.content}
+                          </p>
+                          <div className="flex items-center gap-3 text-[10px] text-slate-400 font-mono pt-1">
+                            <span>From: {msg.sender}</span>
+                            <span>•</span>
+                            <span>{new Date(msg.createdAt).toLocaleDateString()} at {new Date(msg.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                          </div>
+                        </div>
+                        
+                        {!msg.read && onMarkMessageAsRead && (
+                          <button
+                            onClick={() => onMarkMessageAsRead(msg.id)}
+                            className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2.5 py-1.5 rounded-xl transition-colors whitespace-nowrap cursor-pointer shrink-0 border border-indigo-100 shadow-sm"
+                          >
+                            Mark Read
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* 1. Active Bookings Section */}
         <div className="space-y-4">
@@ -240,6 +410,12 @@ export default function ClientDashboard({
                 };
 
                 const activeStyle = statusStyles[booking.status];
+                
+                // 5-minute cancellation policy
+                const createdAtTime = new Date(booking.createdAt).getTime();
+                const timeDiffMs = Date.now() - createdAtTime;
+                const minutesRemaining = Math.max(0, 5 - Math.floor(timeDiffMs / (60 * 1000)));
+                const isCancellable = timeDiffMs < 5 * 60 * 1000;
 
                 return (
                   <div 
@@ -329,12 +505,28 @@ export default function ClientDashboard({
                           Searching for nearest available worker...
                         </span>
                         {booking.status === 'Pending' && (
-                          <button
-                            onClick={() => onCancelBooking(booking.id)}
-                            className="text-rose-600 hover:text-rose-800 font-semibold cursor-pointer underline text-[11px]"
-                          >
-                            Cancel Booking
-                          </button>
+                          isCancellable ? (
+                            <div className="flex flex-col items-end shrink-0">
+                              <button
+                                onClick={() => onCancelBooking(booking.id)}
+                                className="text-rose-600 hover:text-rose-800 font-bold cursor-pointer underline text-[11px]"
+                              >
+                                Cancel Booking
+                              </button>
+                              <span className="text-[9px] text-slate-400 font-semibold font-mono">
+                                ({minutesRemaining}m left)
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-end shrink-0 select-none">
+                              <span className="text-slate-400 font-bold text-[11px] flex items-center gap-1">
+                                🔒 Locked-in
+                              </span>
+                              <span className="text-[9px] text-slate-400 font-mono">
+                                (&gt; 5m elapsed)
+                              </span>
+                            </div>
+                          )
                         )}
                       </div>
                     )}
@@ -368,13 +560,9 @@ export default function ClientDashboard({
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                    isActive
-                      ? 'border-b-2 border-slate-900 text-slate-900 bg-white'
-                      : 'text-slate-500 hover:text-slate-800'
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${getCategoryTabStyles(category.id, isActive)}`}
                 >
-                  {renderIcon(category.icon, `h-4 w-4 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`)}
+                  {renderIcon(category.icon, `h-4 w-4 ${getCategoryIconColor(category.id, isActive)}`)}
                   {category.name}
                 </button>
               );
@@ -417,6 +605,98 @@ export default function ClientDashboard({
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Specialized Custom Request Card */}
+        <div className="bg-gradient-to-br from-slate-900 via-[#1E293B] to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-slate-800">
+          <div className="absolute right-0 top-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute left-1/3 bottom-0 w-60 h-60 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-400/10 text-teal-400 border border-teal-400/20">
+                  <Sparkles className="h-3 w-3" />
+                  Bespoke Doorstep Request
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black font-display uppercase tracking-tight mt-3 text-white">
+                  Can't find your service in the catalog?
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                  Directly specify what specialized service or domestic help you need delivered to your doorstep.
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCustomRequestSubmit} className="mt-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    Service Name / Category
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Garden Landscaping, Locksmith, Microwave Repair..."
+                    value={customServiceName}
+                    onChange={(e) => setCustomServiceName(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl text-xs bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    Preferred Date &amp; Time
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="date"
+                      required
+                      min={todayStr}
+                      value={customServiceDate}
+                      onChange={(e) => setCustomServiceDate(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs bg-slate-900/90 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                    />
+                    <select
+                      value={customServiceTime}
+                      onChange={(e) => setCustomServiceTime(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs bg-slate-900/90 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="08:00 AM">08:00 AM (Morning)</option>
+                      <option value="10:00 AM">10:00 AM (Mid-morning)</option>
+                      <option value="12:00 PM">12:00 PM (Noon)</option>
+                      <option value="02:00 PM">02:00 PM (Afternoon)</option>
+                      <option value="04:00 PM">04:00 PM (Late-afternoon)</option>
+                      <option value="06:00 PM">06:00 PM (Evening)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                  Directly describe your requirements
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  placeholder="Tell our dispatch team exactly what you need. Mention any specific tools, urgent timelines, or safety instructions..."
+                  value={customServiceNotes}
+                  onChange={(e) => setCustomServiceNotes(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl text-xs bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                />
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 py-2.5 px-6 bg-teal-400 hover:bg-teal-300 text-slate-950 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider"
+                >
+                  Submit Special Request
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -526,16 +806,19 @@ export default function ClientDashboard({
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    House/Apartment Details
+                    House/Apartment Sector
                   </label>
-                  <input
-                    type="text"
+                  <select
                     required
-                    placeholder="Block C, Apt 4B"
                     value={houseNumber}
                     onChange={(e) => setHouseNumber(e.target.value)}
-                    className="px-3 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50"
-                  />
+                    className="px-3 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50 appearance-none cursor-pointer"
+                  >
+                    <option value="">Select Sector...</option>
+                    <option value="Upper Fedha">Upper Fedha</option>
+                    <option value="Lower Fedha">Lower Fedha</option>
+                    <option value="Kwandege/Nyayo">Kwandege/Nyayo</option>
+                  </select>
                 </div>
               </div>
 

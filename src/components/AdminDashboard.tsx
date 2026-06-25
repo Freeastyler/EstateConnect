@@ -85,7 +85,16 @@ export default function AdminDashboard({
       if (cat.includes('electrical') && pSpecialty.includes('electrical')) return true;
       if (cat.includes('laundry') && pSpecialty.includes('laundry')) return true;
       if (cat.includes('grocery') && pSpecialty.includes('grocery')) return true;
+      if (cat.includes('tuition') && pSpecialty.includes('tuition')) return true;
+      if (cat.includes('tv') && pSpecialty.includes('tv')) return true;
+      if (cat.includes('pest') && pSpecialty.includes('pest')) return true;
+      if (cat.includes('beauty') && pSpecialty.includes('beauty')) return true;
+      if (cat.includes('childcare') && pSpecialty.includes('childcare')) return true;
+      if (cat.includes('moving') && pSpecialty.includes('moving')) return true;
+      if (cat.includes('water') && pSpecialty.includes('water')) return true;
+      if (cat.includes('car') && pSpecialty.includes('car')) return true;
       
+      if (pSpecialty === cat || cat.includes(pSpecialty) || pSpecialty.includes(cat)) return true;
       return false;
     });
   };

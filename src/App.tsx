@@ -31,6 +31,37 @@ export default function App() {
     }
   });
 
+  // Message Inbox state (for automated congratulations and notices)
+  const [messages, setMessages] = useState<Array<{
+    id: string;
+    userId: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    read: boolean;
+    sender: string;
+  }>>(() => {
+    try {
+      const saved = localStorage.getItem('estateconnect_messages');
+      if (saved) return JSON.parse(saved);
+      
+      // Default welcome for demo resident (Ian)
+      return [
+        {
+          id: 'msg-default-1',
+          userId: 'user-1',
+          title: 'Welcome to EstateConnect Portal! 🎉',
+          content: 'Hello Ian! Congratulations, sir, on joining EstateConnect! We are absolutely thrilled to have you as a verified member of our Fedha Estate family. We look forward to fulfilling your first service order with us and ensuring premium domestic assistance!',
+          createdAt: new Date().toISOString(),
+          read: false,
+          sender: 'Estate Administration'
+        }
+      ];
+    } catch {
+      return [];
+    }
+  });
+
   // UI state
   const [currentView, setCurrentView] = useState<'landing' | 'client' | 'admin'>(() => {
     try {
@@ -63,6 +94,10 @@ export default function App() {
     localStorage.setItem('estateease_bookings', JSON.stringify(bookings));
   }, [bookings]);
 
+  useEffect(() => {
+    localStorage.setItem('estateconnect_messages', JSON.stringify(messages));
+  }, [messages]);
+
   // Toast handler
   const triggerToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     const newToast: ToastMessage = {
@@ -87,6 +122,41 @@ export default function App() {
     setCurrentUser(user);
     setCurrentView(user.role === 'admin' ? 'admin' : 'client');
     triggerToast(message, 'success');
+
+    // Automatically welcome new residents with congratulations depending on their gender
+    if (user.role === 'resident' && user.id !== 'user-1') {
+      const alreadyHasWelcomeMsg = messages.some(m => m.userId === user.id);
+      if (!alreadyHasWelcomeMsg) {
+        let salutation = 'esteemed resident';
+        if (user.gender === 'male') {
+          salutation = 'sir';
+        } else if (user.gender === 'female') {
+          salutation = 'madam';
+        }
+
+        const welcomeText = `Hello ${user.name}! Congratulations, ${salutation}, for joining EstateConnect! We are absolutely thrilled to welcome you to our community. We are looking forward to your first service order with us! Let our team of professional dispatchers and vetted experts make your household management effortless.`;
+
+        const newMsg = {
+          id: `msg-${Date.now()}`,
+          userId: user.id,
+          title: 'Congratulations on Joining EstateConnect! 🎉',
+          content: welcomeText,
+          createdAt: new Date().toISOString(),
+          read: false,
+          sender: 'Estate Administration'
+        };
+
+        setMessages(prev => [newMsg, ...prev]);
+        
+        setTimeout(() => {
+          triggerToast(`You have an official automated notification in your inbox!`, 'info');
+        }, 1500);
+      }
+    }
+  };
+
+  const handleMarkMessageAsRead = (msgId: string) => {
+    setMessages(prev => prev.map(m => m.id === msgId ? { ...m, read: true } : m));
   };
 
   const handleLogout = () => {
@@ -144,6 +214,18 @@ export default function App() {
   };
 
   const handleCancelBooking = (id: string) => {
+    const booking = bookings.find(b => b.id === id);
+    if (!booking) return;
+
+    const createdAtTime = new Date(booking.createdAt).getTime();
+    const timeDiffMs = Date.now() - createdAtTime;
+    const fiveMinutesMs = 5 * 60 * 1000;
+
+    if (timeDiffMs > fiveMinutesMs) {
+      triggerToast(`Unable to cancel booking ${id}. Bookings can only be cancelled within 5 minutes of order placement.`, 'error');
+      return;
+    }
+
     setBookings(prev => prev.filter(b => b.id !== id));
     triggerToast(`Booking ${id} was cancelled successfully.`, 'info');
   };
@@ -190,7 +272,7 @@ export default function App() {
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            {currentUser && (
+            {currentUser && currentUser.role === 'admin' && (
               <div className="flex bg-slate-800 p-0.5 rounded-lg border border-slate-700">
                 <button
                   onClick={() => {
@@ -256,6 +338,8 @@ export default function App() {
           <ClientDashboard
             currentUser={currentUser}
             bookings={bookings}
+            messages={messages}
+            onMarkMessageAsRead={handleMarkMessageAsRead}
             onAddBooking={handleAddBooking}
             onCancelBooking={handleCancelBooking}
             selectedCategoryPreview={selectedCategoryPreview}
