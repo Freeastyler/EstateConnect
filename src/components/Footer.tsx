@@ -1,0 +1,86 @@
+import React from 'react';
+import { ShieldCheck, Heart, Mail, Phone, MapPin } from 'lucide-react';
+
+export default function Footer() {
+  return (
+    <footer className="bg-slate-900 text-slate-400 border-t border-slate-800" id="main-footer">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
+          {/* Brand Column */}
+          <div className="space-y-4 md:col-span-1">
+            <span className="text-white font-display font-bold text-lg tracking-tight">
+              Estate<span className="text-teal-400">Connect</span>
+            </span>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Bridging the gap between busy residents and verified local providers. Premium, hyper-local domestic lifestyle services — from cozy home tuition and fresh grocery bundles to certified repair experts — delivered straight to your doorstep and integrated with your estate security rules.
+            </p>
+            <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
+              <ShieldCheck className="h-4 w-4 text-teal-400 shrink-0" />
+              <span>Estate-Approved Partner</span>
+            </div>
+          </div>
+
+          {/* Core Services */}
+          <div>
+            <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">
+              Services Cover
+            </h3>
+            <ul className="space-y-2 text-xs">
+              <li><span className="hover:text-white transition-colors">Deep & Express Cleaning</span></li>
+              <li><span className="hover:text-white transition-colors">Licensed Plumbing Repair</span></li>
+              <li><span className="hover:text-white transition-colors">Residential Electrical Diagnostics</span></li>
+              <li><span className="hover:text-white transition-colors">Wash & Dry Clean Bundles</span></li>
+              <li><span className="hover:text-white transition-colors">On-Demand Grocery Deliveries</span></li>
+              <li><span className="hover:text-white transition-colors">Kids Home Tuition & Homework Support</span></li>
+            </ul>
+          </div>
+
+          {/* Quick links / policies */}
+          <div>
+            <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">
+              Safety & Security
+            </h3>
+            <ul className="space-y-2 text-xs">
+              <li><span className="hover:text-white transition-colors">Background Check Policy</span></li>
+              <li><span className="hover:text-white transition-colors">Gate Code Protocol</span></li>
+              <li><span className="hover:text-white transition-colors">Provider Code of Conduct</span></li>
+              <li><span className="hover:text-white transition-colors">Estate Security Guidelines</span></li>
+              <li><span className="hover:text-white transition-colors">Service Insurance Guarantee</span></li>
+            </ul>
+          </div>
+
+          {/* Contact Details */}
+          <div>
+            <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">
+              Estate Support
+            </h3>
+            <ul className="space-y-3 text-xs">
+              <li className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-teal-400 shrink-0" />
+                <span>Serving Residents in Fedha Estate, Nairobi, KE</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-teal-400 shrink-0" />
+                <span>0141348178 (Call / WhatsApp)</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-teal-400 shrink-0" />
+                <span>support@estateconnect.com</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Footer Bottom Bar */}
+        <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+          <p>© {new Date().getFullYear()} EstateConnect. All rights reserved to SmartSoftware Solutions.</p>
+          <p className="flex items-center gap-1">
+            Made with <Heart className="h-3 w-3 text-rose-500 fill-current" /> for modern estate communities.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}

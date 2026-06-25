@@ -1,0 +1,6 @@
+{
+  "name": "EstateConnect",
+  "description": "Bridging the gap between busy residents and verified local providers. Premium domestic services delivered straight to your estate doorstep with booking trackers and a dispatcher dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
