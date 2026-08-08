@@ -177,20 +177,20 @@ export const MOCK_SERVICES: ServiceCategory[] = [
 ];
 
 export const MOCK_PROVIDERS: Provider[] = [
-  { id: 'prov-1', name: 'David Kamau', phone: '+254 712 345 678', rating: 4.9, specialty: 'Cleaning Services', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-2', name: 'Jane Mwangi', phone: '+254 723 456 789', rating: 4.8, specialty: 'Cleaning Services', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-3', name: 'John Doe', phone: '+254 734 567 890', rating: 4.7, specialty: 'Plumbing', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-4', name: 'Amara Okafor', phone: '+254 745 678 901', rating: 4.9, specialty: 'Electrical Support', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-5', name: 'Sarah Wanjiku', phone: '+254 756 789 012', rating: 4.8, specialty: 'Laundry & Dry Clean', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-6', name: 'Michael Chen', phone: '+254 767 890 123', rating: 4.6, specialty: 'Grocery Delivery', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-7', name: 'Grace Wairimu', phone: '+254 789 012 345', rating: 4.9, specialty: 'Kids Home Tuition', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-8', name: 'Patrick Ndung\'u', phone: '+254 711 222 333', rating: 4.9, specialty: 'TV Wall Mounting', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-9', name: 'Benson Kilonzo', phone: '+254 722 333 444', rating: 4.8, specialty: 'Pest Control', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-10', name: 'Mercy Muthoni', phone: '+254 733 444 555', rating: 4.9, specialty: 'Beauty & Personal Care', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-11', name: 'Catherine Nafula', phone: '+254 744 555 666', rating: 4.9, specialty: 'Childcare & Babysitting', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-12', name: 'Joseph Omondi', phone: '+254 755 666 777', rating: 4.7, specialty: 'Moving & Transport', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-13', name: 'Daniel Mwangi', phone: '+254 766 777 888', rating: 4.8, specialty: 'Water & Utility Services', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80' },
-  { id: 'prov-14', name: 'Alex Kiprop', phone: '+254 777 888 999', rating: 4.9, specialty: 'Car Care & Services', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' },
+  { id: 'prov-1', name: 'David Kamau', phone: '+254 712 345 678', rating: 4.9, specialty: 'Cleaning Services', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-2', name: 'Jane Mwangi', phone: '+254 723 456 789', rating: 4.8, specialty: 'Cleaning Services', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', onDuty: false },
+  { id: 'prov-3', name: 'John Doe', phone: '+254 734 567 890', rating: 4.7, specialty: 'Plumbing', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-4', name: 'Amara Okafor', phone: '+254 745 678 901', rating: 4.9, specialty: 'Electrical Support', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-5', name: 'Sarah Wanjiku', phone: '+254 756 789 012', rating: 4.8, specialty: 'Laundry & Dry Clean', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80', onDuty: false },
+  { id: 'prov-6', name: 'Michael Chen', phone: '+254 767 890 123', rating: 4.6, specialty: 'Grocery Delivery', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-7', name: 'Grace Wairimu', phone: '+254 789 012 345', rating: 4.9, specialty: 'Kids Home Tuition', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-8', name: 'Patrick Ndung\'u', phone: '+254 711 222 333', rating: 4.9, specialty: 'TV Wall Mounting', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', onDuty: false },
+  { id: 'prov-9', name: 'Benson Kilonzo', phone: '+254 722 333 444', rating: 4.8, specialty: 'Pest Control', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-10', name: 'Mercy Muthoni', phone: '+254 733 444 555', rating: 4.9, specialty: 'Beauty & Personal Care', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-11', name: 'Catherine Nafula', phone: '+254 744 555 666', rating: 4.9, specialty: 'Childcare & Babysitting', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80', onDuty: false },
+  { id: 'prov-12', name: 'Joseph Omondi', phone: '+254 755 666 777', rating: 4.7, specialty: 'Moving & Transport', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-13', name: 'Daniel Mwangi', phone: '+254 766 777 888', rating: 4.8, specialty: 'Water & Utility Services', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', onDuty: true },
+  { id: 'prov-14', name: 'Alex Kiprop', phone: '+254 777 888 999', rating: 4.9, specialty: 'Car Care & Services', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', onDuty: false },
 ];
 
 export const INITIAL_BOOKINGS: Booking[] = [

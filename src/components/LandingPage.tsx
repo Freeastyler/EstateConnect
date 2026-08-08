@@ -50,125 +50,125 @@ export default function LandingPage({ onOpenAuth, onSelectCategoryPreview }: Lan
   return (
     <div className="bg-[#FAF7F2] min-h-screen font-sans" id="landing-page">
       {/* 1. Hero Section */}
-      <section className="relative overflow-hidden bg-white pt-16 pb-20 sm:pb-24 lg:pt-24 lg:pb-32 border-b border-slate-100">
+      <section className="relative overflow-hidden bg-[#FAF7F2] pt-12 pb-16 sm:pb-20 lg:pt-20 lg:pb-28 border-b border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
             
             {/* Text Side */}
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
-              
-              <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 tracking-tighter uppercase leading-none">
-                Premium <span className="theme-display-italic">Domestic</span> <br className="hidden sm:inline" />
-                Services <span className="text-slate-500 font-normal">at Your</span> Doorstep.
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-stone-900 tracking-tight leading-none">
+                Friendly <span className="theme-display-italic text-emerald-800">Domestic</span> <br className="hidden sm:inline" />
+                Services <span className="text-stone-600 font-normal">at Your</span> Doorstep.
               </h1>
               
-              <p className="mt-6 text-base sm:text-lg text-slate-900 font-medium leading-relaxed max-w-xl sm:mx-auto lg:mx-0">
-                Bridging the gap between busy residents and verified local providers.
+              <p className="mt-5 text-base sm:text-lg text-stone-800 font-semibold leading-relaxed max-w-xl sm:mx-auto lg:mx-0">
+                Bridging the gap between busy residents and verified local service providers.
               </p>
               
-              <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed max-w-xl sm:mx-auto lg:mx-0">
+              <p className="mt-2 text-xs sm:text-sm text-stone-600 leading-relaxed max-w-xl sm:mx-auto lg:mx-0 font-medium">
                 EstateConnect connects verified, vetted local specialists in Kids Home Tuition, Cleaning, Plumbing, Electrical, Laundry, and Grocery Delivery directly to your estate with complete speed, quality, and coordinated safety.
               </p>
 
-              <div className="mt-10 sm:flex sm:justify-center lg:justify-start gap-4">
+              <div className="mt-8 sm:flex sm:justify-center lg:justify-start gap-4">
                 <button
                   onClick={onOpenAuth}
-                  className="flex w-full sm:w-auto items-center justify-center gap-2 py-3 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-xl shadow-slate-900/10 hover:shadow-slate-900/20 active:scale-95 transition-all cursor-pointer"
+                  className="flex w-full sm:w-auto items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm shadow-md shadow-emerald-900/15 hover:shadow-lg active:scale-95 transition-all cursor-pointer"
                 >
                   Book Your First Service
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <a
                   href="#how-it-works"
-                  className="flex w-full sm:w-auto items-center justify-center py-3 px-6 mt-3 sm:mt-0 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all"
+                  className="flex w-full sm:w-auto items-center justify-center py-3 px-6 mt-3 sm:mt-0 rounded-2xl bg-stone-200/70 hover:bg-stone-300/80 text-stone-800 font-bold text-sm transition-all"
                 >
                   Explore How It Works
                 </a>
               </div>
 
               {/* Badges / Micro proof */}
-              <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+              <div className="mt-8 pt-6 border-t border-stone-200/80 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
                 <div className="text-left">
-                  <p className="text-xl font-bold text-slate-900 font-display">100%</p>
-                  <p className="text-xs text-slate-400">Vetted Staff</p>
+                  <p className="text-xl font-extrabold text-emerald-900 font-display">100%</p>
+                  <p className="text-xs text-stone-500 font-medium">Vetted Staff</p>
                 </div>
-                <div className="text-left border-l border-slate-200 pl-4">
-                  <p className="text-xl font-bold text-slate-900 font-display">30 mins</p>
-                  <p className="text-xs text-slate-400">Average ETA</p>
+                <div className="text-left border-l border-stone-200 pl-4">
+                  <p className="text-xl font-extrabold text-emerald-900 font-display">30 mins</p>
+                  <p className="text-xs text-stone-500 font-medium">Average ETA</p>
                 </div>
-                <div className="text-left border-l border-slate-200 pl-4">
-                  <p className="text-xl font-bold text-slate-900 font-display">5/5★</p>
-                  <p className="text-xs text-slate-400">Resident Rating</p>
+                <div className="text-left border-l border-stone-200 pl-4">
+                  <p className="text-xl font-extrabold text-emerald-900 font-display">5/5★</p>
+                  <p className="text-xs text-stone-500 font-medium">Resident Rating</p>
                 </div>
               </div>
             </div>
 
             {/* Visual Card Side */}
-            <div className="mt-12 sm:mt-16 lg:mt-0 lg:col-span-6">
+            <div className="mt-10 sm:mt-12 lg:mt-0 lg:col-span-6">
               <div className="relative mx-auto max-w-lg lg:max-w-none">
                 {/* Decorative gradients */}
-                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-teal-500 to-indigo-600 opacity-20 blur-2xl" />
+                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-500 to-amber-500 opacity-20 blur-xl" />
                 
                 {/* Main Mockup UI Component */}
-                <div className="relative bg-white border border-slate-100 rounded-2xl shadow-2xl overflow-hidden p-6">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                <div className="relative bg-white border border-stone-200/90 rounded-3xl shadow-xl overflow-hidden p-6">
+                  <div className="flex items-center justify-between border-b border-stone-100 pb-3 mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
                       <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                       <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                     </div>
-                    <span className="text-xs text-slate-400 font-mono">estateconnect.com/active-booking</span>
+                    <span className="text-xs text-stone-400 font-mono">estateconnect.com/active-booking</span>
                   </div>
 
                   {/* Booking tracker mock card */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-slate-800">Active Order Dispatch</h4>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      <h4 className="text-sm font-bold text-stone-900">Active Order Dispatch</h4>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300/80">
                         ● Dispatched
                       </span>
                     </div>
 
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
+                    <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 space-y-3">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Service Request</p>
-                          <p className="text-sm font-bold text-slate-800">Sofa & Carpet Cleaning</p>
+                          <p className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Service Request</p>
+                          <p className="text-sm font-bold text-stone-900">Sofa & Carpet Cleaning</p>
                         </div>
-                        <span className="text-sm font-bold text-slate-800">$50.00</span>
+                        <span className="text-sm font-extrabold text-emerald-800">$50.00</span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/50">
+                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-stone-200">
                         <div>
-                          <p className="text-[10px] text-slate-400">Scheduled Time</p>
-                          <p className="text-xs font-semibold text-slate-700">Today, 2:30 PM</p>
+                          <p className="text-[10px] font-semibold text-stone-500">Scheduled Time</p>
+                          <p className="text-xs font-bold text-stone-800">Today, 2:30 PM</p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-slate-400">Address Details</p>
-                          <p className="text-xs font-semibold text-slate-700">Villa B12, Fedha Estate</p>
+                          <p className="text-[10px] font-semibold text-stone-500">Address Details</p>
+                          <p className="text-xs font-bold text-stone-800">Villa B12, Fedha Estate</p>
                         </div>
                       </div>
                     </div>
 
                     {/* Assigned Specialist Card */}
-                    <div className="flex items-center justify-between bg-teal-50/50 border border-teal-100 p-3 rounded-xl">
+                    <div className="flex items-center justify-between bg-emerald-50/80 border border-emerald-200/80 p-3 rounded-2xl">
                       <div className="flex items-center gap-3">
                         <img
                           src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                           alt="Specialist"
-                          className="w-10 h-10 rounded-full object-cover border border-teal-200"
+                          className="w-10 h-10 rounded-full object-cover border-2 border-emerald-300"
                         />
                         <div>
-                          <p className="text-xs text-teal-800 font-semibold">Jane Mwangi</p>
-                          <p className="text-[10px] text-teal-600 font-medium">Verified Cleaner • ★4.9</p>
+                          <p className="text-xs text-emerald-950 font-bold">Jane Mwangi</p>
+                          <p className="text-[10px] text-emerald-800 font-semibold">Verified Cleaner • ★4.9</p>
                         </div>
                       </div>
-                      <span className="text-xs font-semibold text-teal-800 font-mono">ETA: 12 Mins</span>
+                      <span className="text-xs font-bold text-emerald-900 font-mono bg-emerald-200/60 px-2 py-1 rounded-lg">ETA: 12 Mins</span>
                     </div>
 
                     {/* Quick call tracker */}
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px]">
-                      <Clock className="h-3.5 w-3.5 text-teal-500" />
+                    <div className="flex items-center gap-2 text-stone-500 text-[11px] font-medium">
+                      <Clock className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                       <span>Security gate code auto-notified to provider upon clearance.</span>
                     </div>
                   </div>

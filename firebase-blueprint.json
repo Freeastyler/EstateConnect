@@ -1,0 +1,59 @@
+{
+  "collections": {
+    "users": {
+      "fields": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "phone": { "type": "string", "optional": true },
+        "gender": { "type": "string", "optional": true },
+        "houseDetails": { "type": "string", "optional": true },
+        "estateName": { "type": "string", "optional": true },
+        "createdAt": { "type": "string" }
+      }
+    },
+    "bookings": {
+      "fields": {
+        "id": { "type": "string" },
+        "residentId": { "type": "string" },
+        "residentName": { "type": "string" },
+        "phone": { "type": "string" },
+        "estateName": { "type": "string" },
+        "houseDetails": { "type": "string" },
+        "categoryName": { "type": "string" },
+        "serviceName": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string" },
+        "providerName": { "type": "string", "optional": true },
+        "providerPhone": { "type": "string", "optional": true },
+        "price": { "type": "number" },
+        "createdAt": { "type": "string" }
+      }
+    },
+    "providers": {
+      "fields": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "rating": { "type": "number" },
+        "specialty": { "type": "string" },
+        "avatar": { "type": "string" },
+        "onDuty": { "type": "boolean" }
+      }
+    },
+    "messages": {
+      "fields": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "read": { "type": "boolean" },
+        "sender": { "type": "string" }
+      }
+    }
+  }
+}

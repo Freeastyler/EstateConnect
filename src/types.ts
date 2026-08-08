@@ -28,7 +28,7 @@ export interface Booking {
   date: string;
   time: string;
   notes: string;
-  status: 'Pending' | 'Dispatched' | 'Completed';
+  status: 'Awaiting Quote' | 'Quote Offered' | 'Pending' | 'Dispatched' | 'Completed' | 'Canceled';
   providerName: string | null;
   providerPhone: string | null;
   price: number;
@@ -44,6 +44,7 @@ export interface User {
   houseDetails?: string;
   phone?: string;
   gender?: 'male' | 'female' | 'other';
+  createdAt?: string;
 }
 
 export interface Provider {
@@ -53,4 +54,5 @@ export interface Provider {
   rating: number;
   specialty: string;
   avatar: string;
+  onDuty?: boolean;
 }

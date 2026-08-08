@@ -1,7 +1,22 @@
 import React from 'react';
 import { ShieldCheck, Heart, Mail, Phone, MapPin } from 'lucide-react';
 
-export default function Footer() {
+interface FooterProps {
+  onSelectServiceCategory?: (categoryId: string) => void;
+}
+
+export default function Footer({ onSelectServiceCategory }: FooterProps) {
+  const handleServiceClick = (categoryId: string) => {
+    if (onSelectServiceCategory) {
+      onSelectServiceCategory(categoryId);
+    }
+    // Smooth scroll to service catalog desk if present or landing preview
+    const targetElement = document.getElementById('services-desk') || document.getElementById('services-preview');
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-slate-900 text-slate-400 border-t border-slate-800" id="main-footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -13,7 +28,7 @@ export default function Footer() {
               Estate<span className="text-teal-400">Connect</span>
             </span>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Bridging the gap between busy residents and verified local providers. Premium, hyper-local domestic lifestyle services — from cozy home tuition and fresh grocery bundles to certified repair experts — delivered straight to your doorstep and integrated with your estate security rules.
+              Bridging the gap between busy residents and verified local service providers. Premium, hyper-local domestic lifestyle services — from cozy home tuition and fresh grocery bundles to certified repair experts — delivered straight to your doorstep and integrated with your estate security rules.
             </p>
             <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
               <ShieldCheck className="h-4 w-4 text-teal-400 shrink-0" />
@@ -24,15 +39,65 @@ export default function Footer() {
           {/* Core Services */}
           <div>
             <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">
-              Services Cover
+              Services Cover (Click to Book)
             </h3>
             <ul className="space-y-2 text-xs">
-              <li><span className="hover:text-white transition-colors">Deep & Express Cleaning</span></li>
-              <li><span className="hover:text-white transition-colors">Licensed Plumbing Repair</span></li>
-              <li><span className="hover:text-white transition-colors">Residential Electrical Diagnostics</span></li>
-              <li><span className="hover:text-white transition-colors">Wash & Dry Clean Bundles</span></li>
-              <li><span className="hover:text-white transition-colors">On-Demand Grocery Deliveries</span></li>
-              <li><span className="hover:text-white transition-colors">Kids Home Tuition & Homework Support</span></li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('cleaning')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Deep & Express Cleaning
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('plumbing')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Licensed Plumbing Repair
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('electrical')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Residential Electrical Diagnostics
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('laundry')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Wash & Dry Clean Bundles
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('grocery')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> On-Demand Grocery Deliveries
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('tuition')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Kids Home Tuition & Homework
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleServiceClick('car-services')}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Car Wash & Detailing
+                </button>
+              </li>
             </ul>
           </div>
 
