@@ -213,62 +213,56 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
     }
   };
 
-  const loadDemoResident = () => {
-    setEmail('resident@estateconnect.co.ke');
-    setPassword('password123');
-    setIsLogin(true);
-    setLoginRole('resident');
-  };
-
-  const loadDemoAdmin = () => {
-    setEmail('f6144050@gmail.com');
-    setPassword('Railways21323');
-    setIsLogin(true);
-    setLoginRole('dispatcher');
-  };
-
   return (
-    <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       <div 
-        className="bg-white rounded-3xl w-[94vw] sm:w-[420px] max-w-md flex flex-col shadow-2xl border border-stone-200/80 my-auto animate-fade-in"
+        className="bg-white rounded-xl w-[94vw] sm:w-[440px] max-w-md flex flex-col shadow-2xl border border-slate-300 my-auto animate-fade-in overflow-hidden"
         id="auth-modal-card"
       >
-        {/* Compact Friendly Header */}
-        <div className="px-4 py-3 bg-gradient-to-r from-emerald-800 to-teal-900 text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-emerald-700/80 border border-emerald-500/50 rounded-xl flex items-center justify-center text-amber-300">
-              <HeartHandshake className="h-4 w-4" />
+        {/* Official Maseno Portal Header Bar */}
+        <div className="px-4 py-3.5 bg-[#0B2545] text-white flex items-center justify-between shrink-0 border-b-4 border-[#E5A823]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-amber-500/10 border-2 border-[#E5A823] rounded-lg flex items-center justify-center text-[#E5A823] shadow-inner shrink-0">
+              <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold tracking-wide font-display text-white">
-                {isLogin ? 'Neighbor Login Pass' : 'Join Fedha Community'}
+              <h2 className="text-xs font-black tracking-widest uppercase font-mono text-amber-400">
+                EstateConnect Portal
               </h2>
-              <p className="text-[10px] text-emerald-200/80 leading-none">
-                {isLogin ? 'Access your doorstep services' : 'Register your household key'}
+              <p className="text-[10px] text-slate-300 font-semibold tracking-wide">
+                {isLogin ? 'Resident & Admin Single Sign-On' : 'New Household Student/Resident Registration'}
               </p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="text-emerald-200/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+            className="text-slate-300 hover:text-white p-1 rounded-md hover:bg-white/10 transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Top Mode Segment Switcher (Sign In vs Join) */}
-        <div className="px-4 pt-3 pb-1 bg-stone-50 border-b border-stone-200/60 shrink-0">
-          <div className="grid grid-cols-2 p-1 bg-stone-200/60 rounded-2xl text-xs font-bold text-stone-600">
+        {/* Portal Notice Box */}
+        <div className="bg-amber-50/90 border-b border-amber-200/80 px-4 py-2.5 flex items-start gap-2 text-[11px] text-amber-950">
+          <KeyRound className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
+          <p className="leading-tight font-medium">
+            <strong>PORTAL NOTICE:</strong> {isLogin ? 'Enter your registered portal email address and security password to log in.' : 'Complete the registration form to obtain your official resident pass.'}
+          </p>
+        </div>
+
+        {/* Top Mode Segment Switcher */}
+        <div className="px-4 pt-3 pb-1 bg-slate-100 border-b border-slate-200 shrink-0">
+          <div className="grid grid-cols-2 p-1 bg-slate-200/90 rounded-lg text-xs font-bold text-slate-700">
             <button
               type="button"
               onClick={() => {
                 setIsLogin(true);
                 setError('');
               }}
-              className={`py-1.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`py-1.5 rounded-md transition-all cursor-pointer flex items-center justify-center gap-1.5 uppercase tracking-wider text-[11px] ${
                 isLogin
-                  ? 'bg-white text-emerald-800 shadow-sm font-extrabold'
-                  : 'text-stone-500 hover:text-stone-800'
+                  ? 'bg-[#0B2545] text-amber-300 shadow-sm font-black border-b-2 border-amber-400'
+                  : 'text-slate-600 hover:text-slate-900 font-bold'
               }`}
             >
               <KeyRound className="h-3.5 w-3.5" />
@@ -280,14 +274,14 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
                 setIsLogin(false);
                 setError('');
               }}
-              className={`py-1.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`py-1.5 rounded-md transition-all cursor-pointer flex items-center justify-center gap-1.5 uppercase tracking-wider text-[11px] ${
                 !isLogin
-                  ? 'bg-emerald-700 text-white shadow-sm font-extrabold'
-                  : 'text-stone-500 hover:text-stone-800'
+                  ? 'bg-[#0B2545] text-amber-300 shadow-sm font-black border-b-2 border-amber-400'
+                  : 'text-slate-600 hover:text-slate-900 font-bold'
               }`}
             >
-              <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-              Join Estate
+              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+              Register
             </button>
           </div>
         </div>
@@ -296,18 +290,18 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
         <WelcomeMascot loginRole={loginRole} isLogin={isLogin} />
 
         {/* Form Body */}
-        <div className="p-4 space-y-3 text-xs flex-1">
-          <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="p-4 space-y-3.5 text-xs flex-1 bg-white">
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             {error && (
-              <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium rounded-xl">
-                {error}
+              <div className="p-2.5 bg-rose-50 border border-rose-300 text-rose-900 text-[11px] font-bold rounded-md">
+                ⚠️ {error}
               </div>
             )}
 
             {/* Role switch for login */}
             {isLogin && (
               <div className="space-y-2">
-                <div className="grid grid-cols-2 gap-1.5 bg-stone-100 p-1 rounded-xl border border-stone-200/50">
+                <div className="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-md border border-slate-300">
                   <button
                     type="button"
                     onClick={() => {
@@ -316,13 +310,13 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
                       setPassword('');
                       setError('');
                     }}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded font-bold text-[11px] transition-all cursor-pointer uppercase ${
                       loginRole === 'resident'
-                        ? 'bg-white text-stone-900 shadow-2xs border border-stone-200'
-                        : 'text-stone-500 hover:text-stone-800'
+                        ? 'bg-[#0B2545] text-white shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    <User className="h-3 w-3 text-emerald-600" />
+                    <User className="h-3 w-3 text-amber-400" />
                     Resident
                   </button>
                   <button
@@ -333,46 +327,16 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
                       setPassword('');
                       setError('');
                     }}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded font-bold text-[11px] transition-all cursor-pointer uppercase ${
                       loginRole === 'dispatcher'
-                        ? 'bg-stone-900 text-amber-300 shadow-2xs'
-                        : 'text-stone-500 hover:text-stone-800'
+                        ? 'bg-[#0B2545] text-amber-300 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     <ShieldCheck className="h-3 w-3 text-amber-400" />
                     Dispatcher
                   </button>
                 </div>
-
-                {loginRole === 'dispatcher' ? (
-                  <div className="p-2.5 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1.5">
-                    <div className="flex items-center gap-1.5 text-amber-900 font-bold text-[11px]">
-                      <ShieldCheck className="h-3.5 w-3.5 text-amber-700" />
-                      Authorized Dispatcher Console
-                    </div>
-                    <button
-                      type="button"
-                      onClick={loadDemoAdmin}
-                      className="w-full flex items-center justify-center gap-1 py-1.5 px-2 bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] rounded-lg transition-all cursor-pointer shadow-xs active:scale-95"
-                    >
-                      ⚡ Auto-Fill Dispatcher Portal Credentials
-                    </button>
-                  </div>
-                ) : (
-                  <div className="p-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-xl space-y-1.5">
-                    <div className="flex items-center gap-1.5 text-emerald-950 font-bold text-[11px]">
-                      <User className="h-3.5 w-3.5 text-emerald-700" />
-                      Resident Doorstep Portal
-                    </div>
-                    <button
-                      type="button"
-                      onClick={loadDemoResident}
-                      className="w-full flex items-center justify-center gap-1 py-1.5 px-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] rounded-lg transition-all cursor-pointer shadow-xs active:scale-95"
-                    >
-                      ⚡ Auto-Fill Resident Demo (Ian)
-                    </button>
-                  </div>
-                )}
               </div>
             )}
 
@@ -380,42 +344,42 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
             {!isLogin && (
               <div className="space-y-2.5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-stone-700 mb-1">Full Name</label>
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">Full Name</label>
                   <div className="relative">
-                    <User className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-stone-400" />
+                    <User className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
                     <input
                       type="text"
                       required
                       placeholder="Ian Kariri"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="pl-8 pr-3 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all bg-stone-50/50"
+                      className="pl-8 pr-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] font-semibold text-stone-700 mb-1">Phone</label>
+                    <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">Phone Number</label>
                     <div className="relative">
-                      <Phone className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-stone-400" />
+                      <Phone className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
                       <input
                         type="tel"
                         required
                         placeholder="+254 799 111 222"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="pl-8 pr-2.5 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all bg-stone-50/50"
+                        className="pl-8 pr-2.5 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-stone-700 mb-1">Gender</label>
+                    <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">Gender</label>
                     <select
                       value={gender}
                       onChange={(e) => setGender(e.target.value as 'male' | 'female' | 'other')}
-                      className="px-3 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 transition-all bg-stone-50/50 font-medium"
+                      className="px-2.5 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-medium focus:outline-none focus:border-[#0B2545] transition-all"
                     >
                       <option value="male">Male</option>
                       <option value="female">Female</option>
@@ -426,13 +390,13 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] font-semibold text-stone-700 mb-1">Estate Location</label>
+                    <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">Estate Location</label>
                     <div className="relative">
-                      <MapPin className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-stone-400" />
+                      <MapPin className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
                       <select
                         value={estateName}
                         onChange={(e) => setEstateName(e.target.value)}
-                        className="pl-8 pr-2 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 transition-all bg-stone-50/50"
+                        className="pl-8 pr-2 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs focus:outline-none focus:border-[#0B2545] transition-all"
                       >
                         {ESTATE_NAMES.map((estate) => (
                           <option key={estate} value={estate}>{estate}</option>
@@ -442,12 +406,12 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-stone-700 mb-1">House Sector</label>
+                    <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">House Sector</label>
                     <select
                       required
                       value={houseDetails}
                       onChange={(e) => setHouseDetails(e.target.value)}
-                      className="px-3 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 transition-all bg-stone-50/50"
+                      className="px-2.5 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs focus:outline-none focus:border-[#0B2545] transition-all"
                     >
                       <option value="">Select Sector...</option>
                       <option value="Upper Fedha">Upper Fedha</option>
@@ -462,52 +426,52 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
             {/* Email */}
             <div>
-              <label className="block text-[11px] font-semibold text-stone-700 mb-1">Email Address</label>
+              <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">Portal Email ID / Username</label>
               <div className="relative">
-                <Mail className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-stone-400" />
+                <Mail className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
                 <input
                   type="email"
                   required
                   placeholder="ian@estateconnect.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all bg-stone-50/50"
+                  className="pl-8 pr-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-[11px] font-semibold text-stone-700 mb-1">Password</label>
+              <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">Portal Security Password</label>
               <div className="relative">
-                <Lock className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-stone-400" />
+                <Lock className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
                 <input
                   type="password"
                   required
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 w-full border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all bg-stone-50/50"
+                  className="pl-8 pr-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all"
                 />
               </div>
             </div>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2.5 px-4 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-emerald-900/10 active:scale-95 cursor-pointer mt-2 flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full py-3 px-4 bg-[#0B2545] hover:bg-[#061830] text-amber-300 font-black text-xs rounded transition-all shadow-md active:scale-95 cursor-pointer mt-3 flex items-center justify-center gap-2 border-b-4 border-[#E5A823] uppercase tracking-wider ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-3.5 w-3.5 text-amber-300" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Processing...
+                  Authenticating...
                 </>
               ) : (
-                isLogin ? 'Sign In to Doorstep Pass' : 'Create Resident Account'
+                isLogin ? 'Sign In to Portal Pass' : 'Complete Portal Registration'
               )}
             </button>
           </form>

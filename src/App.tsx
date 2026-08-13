@@ -314,7 +314,7 @@ export default function App() {
       setCurrentView('client');
     } else {
       setAuthModalOpen(true);
-      triggerToast('Please sign in or use Demo quick-pass to book from our catalog.', 'info');
+      triggerToast('Please sign in or create an account to book from our catalog.', 'info');
     }
   };
 

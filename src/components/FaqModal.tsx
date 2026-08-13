@@ -62,26 +62,26 @@ export default function FaqModal({ isOpen, onClose }: FaqModalProps) {
 
   return (
     <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-      <div className="bg-white rounded-3xl w-full max-w-3xl shadow-2xl border border-slate-100 flex flex-col my-auto animate-fade-in overflow-hidden">
+      <div className="bg-white rounded-xl w-full max-w-3xl shadow-2xl border border-slate-300 flex flex-col my-auto animate-fade-in overflow-hidden">
         
-        {/* Modal Header */}
-        <div className="p-5 sm:p-6 bg-slate-900 text-white flex items-center justify-between shrink-0 border-b border-slate-800">
+        {/* Modal Header - Maseno Portal Navy & Gold */}
+        <div className="p-4 sm:p-5 bg-[#0B2545] text-white flex items-center justify-between shrink-0 border-b-4 border-[#E5A823]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-400">
+            <div className="w-9 h-9 rounded-lg bg-amber-500/10 border-2 border-[#E5A823] flex items-center justify-center text-amber-400">
               <HelpCircle className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-display font-bold uppercase tracking-tight text-white">
-                Neighbor Help &amp; Guide
+              <h2 className="text-xs font-black uppercase tracking-widest text-amber-400 font-mono">
+                Portal Student &amp; Resident Information Directory
               </h2>
-              <p className="text-xs text-slate-400">
-                Friendly answers for Fedha Estate &amp; Nairobi residents
+              <p className="text-[10px] text-slate-300 font-medium">
+                Official Help &amp; Requisition Guidelines for EstateConnect Residents
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer"
+            className="text-slate-300 hover:text-white p-1 rounded-md hover:bg-white/10 transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -89,28 +89,28 @@ export default function FaqModal({ isOpen, onClose }: FaqModalProps) {
 
         {/* Modal Content */}
         <div className="p-5 sm:p-8 space-y-4 bg-slate-50/50">
-          <div className="bg-teal-50 border border-teal-200/80 rounded-2xl p-4 flex items-start gap-3 text-xs text-teal-900">
-            <Heart className="h-5 w-5 text-teal-600 shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <span className="font-bold uppercase tracking-wider block">Welcome to Your Neighborhood Community</span>
+          <div className="bg-amber-50 border border-amber-200/80 rounded-lg p-3.5 flex items-start gap-3 text-xs text-amber-950">
+            <Heart className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
+            <div className="space-y-0.5">
+              <span className="font-bold uppercase tracking-wider block text-[11px] text-amber-900">Official Portal Information Bulletin</span>
               <p className="leading-relaxed">
-                Here are quick, simple answers to help you get started with booking domestic services and managing home care effortlessly.
+                Review key portal operational procedures below for managing doorstep service requisitions and household passes.
               </p>
             </div>
           </div>
 
           <div className="space-y-3">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs space-y-2">
+              <div key={index} className="bg-white rounded-lg p-4 border border-slate-300 shadow-xs space-y-2">
                 <div className="flex items-start gap-2.5">
-                  <span className="w-5 h-5 rounded-md bg-slate-900 text-teal-300 text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded bg-[#0B2545] text-amber-300 text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5 font-mono">
                     Q{index + 1}
                   </span>
-                  <h3 className="text-sm font-bold text-slate-900 font-display leading-snug">
+                  <h3 className="text-xs font-bold text-slate-900 font-mono uppercase tracking-wide leading-snug">
                     {faq.q}
                   </h3>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed pl-7 font-medium">
+                <p className="text-xs text-slate-700 leading-relaxed pl-7 font-medium">
                   {faq.a}
                 </p>
               </div>
@@ -118,38 +118,38 @@ export default function FaqModal({ isOpen, onClose }: FaqModalProps) {
           </div>
 
           {/* Neighbor Support Callout */}
-          <div className="bg-slate-900 rounded-2xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-800">
+          <div className="bg-[#0B2545] rounded-lg p-4 text-white flex flex-col sm:flex-row items-center justify-between gap-4 border-b-4 border-[#E5A823]">
             <div>
-              <h4 className="text-xs font-bold font-display uppercase tracking-wider text-teal-400">
-                Need Help with a Custom Request?
+              <h4 className="text-xs font-black uppercase tracking-widest text-amber-400 font-mono">
+                Portal Requisition Desk Assistance
               </h4>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                Our estate support desk is always here to assist you with booking or gate passes.
+              <p className="text-[11px] text-slate-300 mt-0.5">
+                Our estate portal administration is available 24/7 for custom requisitions and gate clearances.
               </p>
             </div>
             <a
               href="tel:0796502465"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-sm shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded transition-all shadow-sm shrink-0 cursor-pointer uppercase tracking-wider font-mono"
             >
               <Phone className="h-3.5 w-3.5" />
-              Call Support: 0796502465
+              Call Requisition Desk: 0796502465
             </a>
           </div>
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-white border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 shrink-0">
-          <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
+        <div className="p-4 bg-white border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-4 text-xs font-mono font-bold text-slate-700">
             <span className="flex items-center gap-1">
-              <Phone className="h-3.5 w-3.5 text-teal-600" /> 0796502465 (Support Desk)
+              <Phone className="h-3.5 w-3.5 text-[#0B2545]" /> Support Desk: 0796502465
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all cursor-pointer ml-auto uppercase tracking-wider"
+            className="px-5 py-2 bg-[#0B2545] hover:bg-[#061830] text-amber-300 text-xs font-bold rounded transition-all cursor-pointer ml-auto uppercase tracking-wider border-b-2 border-amber-500 font-mono"
           >
-            Close Guide
+            Close Directory
           </button>
         </div>
 

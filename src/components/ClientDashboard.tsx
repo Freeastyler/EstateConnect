@@ -862,77 +862,94 @@ export default function ClientDashboard({
 
       </div>
 
-      {/* 3. Booking Confirmation Modal - Unified Single-Scroll */}
+      {/* 3. Booking Confirmation Modal - Maseno Portal Style Form Card */}
       {bookingModalOpen && selectedService && selectedCategory && (
-        <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
           <div 
-            className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-100 flex flex-col my-auto animate-fade-in"
+            className="bg-white rounded-xl w-full max-w-lg shadow-2xl border border-slate-300 flex flex-col my-auto animate-fade-in overflow-hidden"
             id="booking-modal-card"
           >
-            {/* Header */}
-            <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
-              <div>
-                <h2 className="text-lg font-display font-bold text-slate-900">Configure Service Booking</h2>
-                <p className="text-xs text-slate-400">Complete booking details for estate verification</p>
+            {/* Header - Maseno Portal Navy & Gold */}
+            <div className="p-4 sm:p-5 bg-[#0B2545] text-white border-b-4 border-[#E5A823] flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 bg-amber-500/10 border-2 border-[#E5A823] rounded-lg flex items-center justify-center text-[#E5A823] shadow-inner shrink-0">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-xs font-black tracking-widest uppercase font-mono text-amber-400">
+                    Service Requisition Form
+                  </h2>
+                  <p className="text-[10px] text-slate-300 font-semibold tracking-wide">
+                    EstateConnect Resident Dispatch &amp; Verification Portal
+                  </p>
+                </div>
               </div>
               <button 
                 onClick={handleCloseBooking}
-                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
+                className="text-slate-300 hover:text-white p-1 rounded-md hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
+            {/* Portal Notice Box */}
+            <div className="bg-amber-50/90 border-b border-amber-200/80 px-4 py-2.5 flex items-start gap-2 text-[11px] text-amber-950">
+              <Clock className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
+              <p className="leading-tight font-medium">
+                <strong>PORTAL NOTICE:</strong> Fill in your preferred service requisition details. Your order will be logged into the official estate registry.
+              </p>
+            </div>
+
             {/* Modal Body */}
-            <form onSubmit={handleFormSubmit} className="p-4 sm:p-6 space-y-4">
+            <form onSubmit={handleFormSubmit} className="p-4 sm:p-6 space-y-4 bg-white">
               
               {/* Selected service summary card */}
-              <div className="bg-slate-50 p-4 border border-slate-200/60 rounded-xl flex justify-between items-start">
+              <div className="bg-slate-50 p-3.5 border border-slate-300 rounded-lg flex justify-between items-start">
                 <div>
-                  <span className="text-[10px] text-indigo-600 font-bold uppercase tracking-wider block">
-                    {selectedCategory.name}
+                  <span className="text-[10px] text-[#0B2545] font-black uppercase tracking-widest block">
+                    Category: {selectedCategory.name}
                   </span>
-                  <h4 className="text-sm font-bold text-slate-800 mt-0.5">{selectedService.name}</h4>
-                  <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    Est: {selectedService.duration}
+                  <h4 className="text-sm font-bold text-slate-900 mt-0.5 font-mono">{selectedService.name}</h4>
+                  <p className="text-[11px] text-slate-600 mt-1 flex items-center gap-1 font-medium">
+                    <Clock className="h-3 w-3 text-slate-500" />
+                    Est. Duration: {selectedService.duration}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-slate-400">Cost Quote</p>
-                  <p className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1.5 rounded-lg mt-1 italic">Offered on Request</p>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Fee Quote</p>
+                  <p className="text-xs font-black text-[#0B2545] bg-amber-400/20 border border-amber-300 px-2.5 py-1 rounded mt-1 font-mono">Quoted on Requisition</p>
                 </div>
               </div>
 
               {/* Booking Date & Time */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Preferred Date
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">
+                    Preferred Service Date
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <Calendar className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
                     <input
                       type="date"
                       required
                       min={todayStr}
                       value={bookingDate}
                       onChange={(e) => setBookingDate(e.target.value)}
-                      className="pl-10 pr-3 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50"
+                      className="pl-9 pr-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">
                     Preferred Start Hour
                   </label>
                   <div className="relative">
-                    <Clock className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <Clock className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
                     <select
                       value={bookingTime}
                       onChange={(e) => setBookingTime(e.target.value)}
-                      className="pl-10 pr-3 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50 appearance-none"
+                      className="pl-9 pr-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] transition-all"
                     >
                       <option value="08:00 AM">08:00 AM</option>
                       <option value="09:00 AM">09:00 AM</option>
@@ -952,7 +969,7 @@ export default function ClientDashboard({
               {/* Estate Location Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">
                     Estate Location
                   </label>
                   <input
@@ -960,19 +977,19 @@ export default function ClientDashboard({
                     required
                     readOnly
                     value={estateLocation}
-                    className="px-3 py-2 w-full border border-slate-100 rounded-xl text-xs bg-slate-100 text-slate-500 focus:outline-none"
+                    className="px-3 py-1.5 w-full border border-slate-300 rounded bg-slate-100 text-slate-600 text-xs font-mono focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    House/Apartment Sector
+                  <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">
+                    House / Sector Location
                   </label>
                   <select
                     required
                     value={houseNumber}
                     onChange={(e) => setHouseNumber(e.target.value)}
-                    className="px-3 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50 appearance-none cursor-pointer"
+                    className="px-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs focus:outline-none focus:border-[#0B2545] transition-all cursor-pointer font-medium"
                   >
                     <option value="">Select Sector...</option>
                     <option value="Upper Fedha">Upper Fedha</option>
@@ -985,36 +1002,36 @@ export default function ClientDashboard({
 
               {/* Contact phone */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Security Code / Contact Phone
+                <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">
+                  Security Gate Contact Phone
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <Phone className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
                   <input
                     type="tel"
                     required
                     placeholder="+254 799 111 222"
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
-                    className="pl-10 pr-4 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50"
+                    className="pl-9 pr-3 py-1.5 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs font-mono focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all"
                   />
                 </div>
-                <span className="text-[10px] text-slate-400 mt-1 block">
-                  Used by dispatched workers at the estate gatehouse.
+                <span className="text-[10px] text-slate-500 mt-1 block">
+                  Utilized for security verification at the estate entrance gatehouse.
                 </span>
               </div>
 
               {/* Special instructions */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Special Notes / Entry Code (Optional)
+                <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-widest mb-1">
+                  Requisition Instructions / Gate Code (Optional)
                 </label>
                 <textarea
                   rows={2}
                   placeholder="E.g., Please call before arrival. Gate code is #5021."
                   value={specialNotes}
                   onChange={(e) => setSpecialNotes(e.target.value)}
-                  className="px-3 py-2 w-full border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all bg-slate-50/50 resize-none"
+                  className="px-3 py-2 w-full border border-slate-300 rounded bg-slate-50 focus:bg-white text-xs focus:outline-none focus:border-[#0B2545] focus:ring-1 focus:ring-blue-100 transition-all resize-none"
                 />
               </div>
 
@@ -1023,15 +1040,15 @@ export default function ClientDashboard({
                 <button
                   type="button"
                   onClick={handleCloseBooking}
-                  className="flex-1 py-2.5 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                  className="flex-1 py-2.5 px-4 border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-bold rounded transition-colors cursor-pointer uppercase tracking-wider"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 px-4 bg-slate-900 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md transition-all active:scale-95 cursor-pointer uppercase tracking-wider"
+                  className="flex-1 py-2.5 px-4 bg-[#0B2545] hover:bg-[#061830] text-amber-300 text-xs font-black rounded shadow-md transition-all active:scale-95 cursor-pointer border-b-4 border-[#E5A823] uppercase tracking-wider"
                 >
-                  Request Quote &amp; Book
+                  Submit Order Requisition
                 </button>
               </div>
 
@@ -1040,65 +1057,80 @@ export default function ClientDashboard({
         </div>
       )}
 
-      {/* 4. Order Received Confirmation Modal */}
+      {/* 4. Order Received Confirmation Modal - Maseno Voucher Receipt Style */}
       {submittedBookingSuccess && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center space-y-6 border border-slate-100 shadow-2xl animate-fade-in my-auto">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
-              <CheckCircle2 className="h-9 w-9 text-emerald-600" />
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-3.5 py-1 rounded-full">
-                Order Received
+          <div className="bg-white rounded-xl max-w-md w-full border border-slate-300 shadow-2xl animate-fade-in my-auto overflow-hidden">
+            {/* Header */}
+            <div className="p-4 sm:p-5 bg-[#0B2545] text-white border-b-4 border-[#E5A823] text-center space-y-1">
+              <div className="w-12 h-12 bg-amber-500/10 border-2 border-[#E5A823] text-amber-400 rounded-lg flex items-center justify-center mx-auto shadow-inner mb-2">
+                <CheckCircle2 className="h-7 w-7 text-amber-400" />
+              </div>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 bg-white/10 px-3 py-0.5 rounded border border-white/20">
+                Official Requisition Voucher
               </span>
-              <h3 className="text-2xl font-display font-black text-slate-900 uppercase tracking-tight pt-1">
-                Request Submitted!
+              <h3 className="text-xl font-mono font-black text-white uppercase tracking-tight pt-1">
+                Request Registered!
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Your request for <strong className="text-slate-900">{submittedBookingSuccess.serviceName}</strong> has been logged under Ref <span className="font-mono text-emerald-700 font-bold">{submittedBookingSuccess.booking.id}</span>.
+            </div>
+
+            <div className="p-6 space-y-5 text-center bg-white">
+              <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                Your service requisition for <strong className="text-[#0B2545]">{submittedBookingSuccess.serviceName}</strong> has been logged in the portal registry.
               </p>
-            </div>
 
-            {/* Client Service Care & Assurance Card */}
-            <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 text-left space-y-3 text-xs">
-              <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] flex items-center gap-1.5 border-b border-slate-200/80 pb-2">
-                <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
-                <span>What Happens Next</span>
-              </h4>
-              
-              <ul className="space-y-2 text-[11px] text-slate-600 leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                  <span><strong>Instant Queueing:</strong> Your order has been placed successfully in our system.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                  <span><strong>Specialist Assignment:</strong> Our team is reviewing your details and matching you with a verified local professional.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                  <span><strong>Live Status Updates:</strong> Please wait for updates on your account dashboard under <strong className="text-slate-800">"My Bookings"</strong> as we prepare your service.</span>
-                </li>
-              </ul>
-            </div>
+              {/* Voucher Details Box */}
+              <div className="bg-slate-50 border border-slate-300 rounded-lg p-3.5 text-left space-y-2.5 text-xs font-mono">
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500 text-[10px] uppercase font-bold">Voucher Reference:</span>
+                  <span className="text-[#0B2545] font-black">{submittedBookingSuccess.booking.id}</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500 text-[10px] uppercase font-bold">Target Date:</span>
+                  <span className="text-slate-900 font-bold">{submittedBookingSuccess.booking.bookingDate} @ {submittedBookingSuccess.booking.bookingTime}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500 text-[10px] uppercase font-bold">Portal Status:</span>
+                  <span className="text-amber-700 bg-amber-100 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Queued for Dispatch</span>
+                </div>
+              </div>
 
-            {/* Action */}
-            <div className="pt-2">
-              <button
-                onClick={() => {
-                  setSubmittedBookingSuccess(null);
-                  setTimeout(() => {
-                    const el = document.getElementById('my-bookings-section');
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  }, 80);
-                }}
-                className="w-full py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider"
-              >
-                Back to Dashboard
-              </button>
+              {/* Portal Guidance Box */}
+              <div className="bg-amber-50/80 border border-amber-200 rounded-lg p-3.5 text-left space-y-2 text-xs">
+                <h4 className="font-bold text-amber-950 uppercase tracking-wider text-[11px] flex items-center gap-1.5 border-b border-amber-200 pb-1.5">
+                  <ShieldCheck className="h-4 w-4 text-amber-700 shrink-0" />
+                  <span>Portal Next Actions</span>
+                </h4>
+                
+                <ul className="space-y-1.5 text-[11px] text-amber-900 leading-relaxed">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-700 font-bold">✓</span>
+                    <span>An estate-verified specialist will be assigned to your requisition.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-700 font-bold">✓</span>
+                    <span>Track real-time status and quotes under <strong className="text-amber-950">"My Bookings"</strong> in your portal dashboard.</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-2">
+                <button
+                  onClick={() => {
+                    setSubmittedBookingSuccess(null);
+                    setTimeout(() => {
+                      const el = document.getElementById('my-bookings-section');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }, 80);
+                  }}
+                  className="w-full py-3 px-4 bg-[#0B2545] hover:bg-[#061830] text-amber-300 font-black text-xs rounded transition-all shadow-md active:scale-95 cursor-pointer border-b-4 border-[#E5A823] uppercase tracking-wider"
+                >
+                  Return to Portal Dashboard
+                </button>
+              </div>
             </div>
           </div>
         </div>
