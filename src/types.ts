@@ -4,6 +4,7 @@ export interface ServiceItem {
   description: string;
   price: number;
   duration: string;
+  image?: string;
 }
 
 export interface ServiceCategory {
@@ -13,6 +14,7 @@ export interface ServiceCategory {
   icon: string; // Lucide icon name
   bgColor: string; // Tailwind background color
   accentColor: string; // Tailwind accent border/text color
+  image?: string;
   items: ServiceItem[];
 }
 

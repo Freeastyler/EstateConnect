@@ -26,10 +26,12 @@ import {
   Scissors,
   Baby,
   Car,
-  Bell
+  Bell,
+  ShieldCheck
 } from 'lucide-react';
 import { Booking, User as UserType, ServiceCategory, ServiceItem } from '../types';
 import { MOCK_SERVICES } from '../mockData';
+import { generateBookingPDF } from '../utils/pdfGenerator';
 
 interface ClientDashboardProps {
   currentUser: UserType;
@@ -96,6 +98,13 @@ export default function ClientDashboard({
   const [customServiceTime, setCustomServiceTime] = useState('10:00 AM');
   const [customServiceNotes, setCustomServiceNotes] = useState('');
 
+  // State for PDF download & email notification modal
+  const [submittedBookingSuccess, setSubmittedBookingSuccess] = useState<{
+    booking: Booking;
+    categoryName: string;
+    serviceName: string;
+  } | null>(null);
+
   // Sync selectedCategoryPreview from landing page click
   useEffect(() => {
     if (selectedCategoryPreview) {
@@ -126,6 +135,26 @@ export default function ClientDashboard({
       return;
     }
 
+    const newBookingObj: Booking = {
+      id: `EE-${Math.floor(1000 + Math.random() * 9000)}`,
+      residentId: currentUser.id,
+      residentName: currentUser.name || 'Resident',
+      phone: contactPhone,
+      estateName: estateLocation,
+      houseDetails: houseNumber,
+      categoryName: selectedCategory.name,
+      serviceName: selectedService.name,
+      date: bookingDate,
+      time: bookingTime,
+      notes: specialNotes,
+      status: 'Awaiting Quote',
+      providerName: null,
+      providerPhone: null,
+      price: selectedService.price,
+      createdAt: new Date().toISOString()
+    };
+
+    // 1. Dispatch to Firestore DB
     onAddBooking({
       categoryName: selectedCategory.name,
       serviceName: selectedService.name,
@@ -138,6 +167,13 @@ export default function ClientDashboard({
       phone: contactPhone
     });
 
+    // 2. Trigger order confirmation modal
+    setSubmittedBookingSuccess({
+      booking: newBookingObj,
+      categoryName: selectedCategory.name,
+      serviceName: selectedService.name
+    });
+
     handleCloseBooking();
   };
 
@@ -146,6 +182,25 @@ export default function ClientDashboard({
     if (!customServiceName || !customServiceDate || !customServiceNotes) {
       return;
     }
+
+    const newBookingObj: Booking = {
+      id: `EE-${Math.floor(1000 + Math.random() * 9000)}`,
+      residentId: currentUser.id,
+      residentName: currentUser.name || 'Resident',
+      phone: contactPhone || currentUser.phone || '+254 700 000 000',
+      estateName: estateLocation,
+      houseDetails: houseNumber || currentUser.houseDetails || 'Upper Fedha',
+      categoryName: 'Custom Request',
+      serviceName: customServiceName,
+      date: customServiceDate,
+      time: customServiceTime,
+      notes: customServiceNotes,
+      status: 'Awaiting Quote',
+      providerName: null,
+      providerPhone: null,
+      price: 0,
+      createdAt: new Date().toISOString()
+    };
 
     onAddBooking({
       categoryName: 'Custom Request',
@@ -157,6 +212,12 @@ export default function ClientDashboard({
       estateName: estateLocation,
       houseDetails: houseNumber || currentUser.houseDetails || 'Upper Fedha',
       phone: contactPhone || currentUser.phone || '+254 700 000 000'
+    });
+
+    setSubmittedBookingSuccess({
+      booking: newBookingObj,
+      categoryName: 'Custom Request',
+      serviceName: customServiceName
     });
 
     setCustomServiceName('');
@@ -342,7 +403,7 @@ export default function ClientDashboard({
         })()}
 
         {/* 1. Active Bookings Section */}
-        <div className="space-y-4">
+        <div className="space-y-4" id="my-bookings-section">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
             <div>
               <span className="theme-sub-label">Dispatch Desk</span>
@@ -612,6 +673,18 @@ export default function ClientDashboard({
                         " {booking.notes} "
                       </p>
                     )}
+
+                    {/* PDF Voucher Action */}
+                    <div className="pt-2 flex justify-between items-center border-t border-slate-100">
+                      <span className="text-[10px] text-slate-400 font-mono">PDF Receipt Available</span>
+                      <button
+                        onClick={() => generateBookingPDF({ booking, categoryName: booking.categoryName, serviceName: booking.serviceName })}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-xl transition-all shadow-2xs active:scale-95 cursor-pointer"
+                      >
+                        <FileText className="h-3.5 w-3.5 text-teal-300" />
+                        <span>Download PDF Slip</span>
+                      </button>
+                    </div>
                   </div>
                 );
               })}
@@ -649,34 +722,46 @@ export default function ClientDashboard({
             {currentCategory.items.map((service) => (
               <div 
                 key={service.id}
-                className={`p-4 sm:p-6 flex flex-col justify-between group h-auto min-h-48 sm:min-h-56 rounded-3xl border transition-all hover:shadow-md ${currentCategory.bgColor} w-full`}
+                className="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-md hover:border-emerald-500/50 transition-all flex flex-col justify-between group h-full w-full"
               >
-                <div>
-                  <div className="flex justify-between items-start gap-2">
-                    <h3 className="text-sm sm:text-base font-bold text-slate-800 font-display leading-snug group-hover:text-indigo-600 transition-colors">
+                {/* Image Banner Representation */}
+                <div className="relative h-36 w-full overflow-hidden bg-slate-100 shrink-0">
+                  <img
+                    src={service.image || currentCategory.image}
+                    alt={service.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent" />
+                  <span className="absolute top-2.5 right-2.5 shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-slate-900/80 backdrop-blur-md text-teal-300 border border-teal-400/30">
+                    Quote on Request
+                  </span>
+                  <div className="absolute bottom-2 left-3 right-3">
+                    <span className="text-white text-xs font-bold leading-tight drop-shadow-xs line-clamp-1 font-display uppercase tracking-tight">
                       {service.name}
-                    </h3>
-                    <span className="shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-900/5 text-slate-700 border border-slate-900/10">Quote on Request</span>
+                    </span>
                   </div>
-
-                  <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                    {service.description}
-                  </p>
                 </div>
 
-                <div className="mt-4 pt-3 sm:pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5 text-slate-500 text-xs font-medium">
-                    <Clock className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                    <span>Est: {service.duration}</span>
-                  </div>
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    {service.description}
+                  </p>
 
-                  <button
-                    onClick={() => handleOpenBooking(currentCategory, service)}
-                    className="flex items-center gap-1 py-1.5 px-3 bg-slate-900 hover:bg-indigo-600 text-white text-xs font-semibold rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer ml-auto"
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                    Schedule Service
-                  </button>
+                  <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 text-slate-600 text-[11px] font-semibold">
+                      <Clock className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span>Est: {service.duration}</span>
+                    </div>
+
+                    <button
+                      onClick={() => handleOpenBooking(currentCategory, service)}
+                      className="flex items-center gap-1 py-1.5 px-3 bg-slate-900 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl transition-all shadow-xs active:scale-95 cursor-pointer ml-auto"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                      Schedule Service
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -777,29 +862,29 @@ export default function ClientDashboard({
 
       </div>
 
-      {/* 3. Booking Confirmation Modal */}
+      {/* 3. Booking Confirmation Modal - Unified Single-Scroll */}
       {bookingModalOpen && selectedService && selectedCategory && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
           <div 
-            className="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl border border-slate-100 animate-fade-in"
+            className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-100 flex flex-col my-auto animate-fade-in"
             id="booking-modal-card"
           >
             {/* Header */}
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
               <div>
                 <h2 className="text-lg font-display font-bold text-slate-900">Configure Service Booking</h2>
                 <p className="text-xs text-slate-400">Complete booking details for estate verification</p>
               </div>
               <button 
                 onClick={handleCloseBooking}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <form onSubmit={handleFormSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleFormSubmit} className="p-4 sm:p-6 space-y-4">
               
               {/* Selected service summary card */}
               <div className="bg-slate-50 p-4 border border-slate-200/60 rounded-xl flex justify-between items-start">
@@ -916,7 +1001,7 @@ export default function ClientDashboard({
                 </div>
                 <span className="text-[10px] text-slate-400 mt-1 block">
                   Used by dispatched workers at the estate gatehouse.
-                </span >
+                </span>
               </div>
 
               {/* Special instructions */}
@@ -938,19 +1023,83 @@ export default function ClientDashboard({
                 <button
                   type="button"
                   onClick={handleCloseBooking}
-                  className="flex-1 py-2 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                  className="flex-1 py-2.5 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                  className="flex-1 py-2.5 px-4 bg-slate-900 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md transition-all active:scale-95 cursor-pointer uppercase tracking-wider"
                 >
                   Request Quote &amp; Book
                 </button>
               </div>
 
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Order Received Confirmation Modal */}
+      {submittedBookingSuccess && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center space-y-6 border border-slate-100 shadow-2xl animate-fade-in my-auto">
+            <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
+              <CheckCircle2 className="h-9 w-9 text-emerald-600" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-3.5 py-1 rounded-full">
+                Order Received
+              </span>
+              <h3 className="text-2xl font-display font-black text-slate-900 uppercase tracking-tight pt-1">
+                Request Submitted!
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                Your request for <strong className="text-slate-900">{submittedBookingSuccess.serviceName}</strong> has been logged under Ref <span className="font-mono text-emerald-700 font-bold">{submittedBookingSuccess.booking.id}</span>.
+              </p>
+            </div>
+
+            {/* Client Service Care & Assurance Card */}
+            <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 text-left space-y-3 text-xs">
+              <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] flex items-center gap-1.5 border-b border-slate-200/80 pb-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
+                <span>What Happens Next</span>
+              </h4>
+              
+              <ul className="space-y-2 text-[11px] text-slate-600 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+                  <span><strong>Instant Queueing:</strong> Your order has been placed successfully in our system.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+                  <span><strong>Specialist Assignment:</strong> Our team is reviewing your details and matching you with a verified local professional.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+                  <span><strong>Live Status Updates:</strong> Please wait for updates on your account dashboard under <strong className="text-slate-800">"My Bookings"</strong> as we prepare your service.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Action */}
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setSubmittedBookingSuccess(null);
+                  setTimeout(() => {
+                    const el = document.getElementById('my-bookings-section');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }, 80);
+                }}
+                className="w-full py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider"
+              >
+                Back to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       )}

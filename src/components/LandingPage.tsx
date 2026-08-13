@@ -263,30 +263,55 @@ export default function LandingPage({ onOpenAuth, onSelectCategoryPreview }: Lan
               <div
                 key={category.id}
                 onClick={() => onSelectCategoryPreview(category.id)}
-                className={`p-8 rounded-[2rem] border border-slate-200/80 shadow-sm hover:border-teal-500 hover:shadow-lg hover:shadow-teal-600/5 transition-all cursor-pointer text-left ${category.bgColor} flex flex-col justify-between h-80 relative overflow-hidden`}
+                className="group rounded-[2rem] border border-slate-200/90 shadow-sm hover:border-teal-500 hover:shadow-xl hover:shadow-teal-600/10 transition-all cursor-pointer text-left bg-white flex flex-col overflow-hidden h-full relative"
               >
-                {category.id === 'tuition' && (
-                  <div className="absolute top-4 right-4 bg-amber-100 text-amber-900 border border-amber-200 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-xs">
-                    New Core Service
+                {/* Image Header with African Provider Context */}
+                <div className="relative h-48 w-full overflow-hidden bg-slate-900 shrink-0">
+                  {category.image ? (
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-slate-800" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/30 to-transparent" />
+                  
+                  {/* Category Title Overlay */}
+                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-md text-slate-900 border border-white/50 shrink-0">
+                        {renderIcon(category.icon, "h-4 w-4 text-emerald-800")}
+                      </div>
+                      <h3 className="text-white text-sm font-black uppercase tracking-wider font-display drop-shadow-xs">
+                        {category.name}
+                      </h3>
+                    </div>
                   </div>
-                )}
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-sm text-slate-800 mb-5 border border-slate-100">
-                    {renderIcon(category.icon, "h-6 w-6")}
-                  </div>
-                  <h3 className="text-xl font-black text-slate-900 font-display uppercase tracking-tight">{category.name}</h3>
-                  <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                    {category.description}
-                  </p>
+
+                  {/* Badge */}
+                  <span className="absolute top-3 right-3 bg-slate-900/90 backdrop-blur-md text-teal-300 border border-teal-500/30 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                    Nairobi Verified
+                  </span>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-slate-200/50 flex justify-between items-center">
-                  <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
-                    {category.items.length} options available
-                  </span>
-                  <span className="text-xs font-bold text-slate-900 flex items-center gap-1">
-                    Book Now <ArrowRight className="h-3 w-3" />
-                  </span>
+                {/* Card Body */}
+                <div className="p-5 flex-1 flex flex-col justify-between bg-stone-50/50">
+                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                    {category.description}
+                  </p>
+
+                  <div className="mt-4 pt-3 border-t border-slate-200/60 flex justify-between items-center">
+                    <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                      {category.items.length} Options Available
+                    </span>
+                    <span className="text-xs font-bold text-emerald-800 flex items-center gap-1 group-hover:text-emerald-600 transition-colors">
+                      Book Service <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}

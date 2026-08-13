@@ -1,4 +1,16 @@
 import { ServiceCategory, Provider, Booking } from './types';
+import cleaningImg from './assets/images/nairobi_home_cleaning_1786636433525.jpg';
+import tuitionImg from './assets/images/nairobi_home_tuition_1786636447191.jpg';
+import groceriesImg from './assets/images/nairobi_fresh_groceries_1786636458471.jpg';
+import carWashImg from './assets/images/nairobi_car_wash_1786636471190.jpg';
+import electricianImg from './assets/images/nairobi_electrician_lighting_1786637127955.jpg';
+import applianceImg from './assets/images/nairobi_appliance_repair_1786637141395.jpg';
+import seniorBarberImg from './assets/images/nairobi_senior_barber_1786637973149.jpg';
+import massageImg from './assets/images/nairobi_massage_spa_1786637994603.jpg';
+import childcareImg from './assets/images/nairobi_childcare_1786638009733.jpg';
+import movingImg from './assets/images/nairobi_moving_pickup_1786638023479.jpg';
+import waterUtilityImg from './assets/images/nairobi_water_utility_1786638038728.jpg';
+import carCareImg from './assets/images/nairobi_car_care_1786638056020.jpg';
 
 export const ESTATE_NAMES = [
   'Fedha Estate'
@@ -12,10 +24,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Sparkles',
     bgColor: 'bg-gradient-to-br from-teal-50/90 to-emerald-50/40 border-teal-200 text-teal-900',
     accentColor: 'border-teal-300 text-teal-700 focus:ring-teal-500',
+    image: cleaningImg,
     items: [
-      { id: 'clean-1', name: 'Express Cleaning', description: 'Standard dusting, vacuuming, and mopping for bedrooms, kitchen, and bathrooms.', price: 35, duration: '1.5 hrs' },
-      { id: 'clean-2', name: 'Deep Home Cleaning', description: 'Thorough, top-to-bottom sanitize including oven interiors, window sills, and tile scrubbing.', price: 75, duration: '4 hrs' },
-      { id: 'clean-3', name: 'Sofa & Carpet Cleaning', description: 'Deep extraction steam clean to remove stains, odors, and dust mites from sofas and carpets.', price: 50, duration: '2 hrs' },
+      { id: 'clean-1', name: 'Express Cleaning', description: 'Standard dusting, vacuuming, and mopping for bedrooms, kitchen, and bathrooms.', price: 35, duration: '1.5 hrs', image: cleaningImg },
+      { id: 'clean-2', name: 'Deep Home Cleaning', description: 'Thorough, top-to-bottom sanitize including oven interiors, window sills, and tile scrubbing.', price: 75, duration: '4 hrs', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&auto=format&fit=crop&q=80' },
+      { id: 'clean-3', name: 'Sofa & Carpet Cleaning', description: 'Deep extraction steam clean to remove stains, odors, and dust mites from sofas and carpets.', price: 50, duration: '2 hrs', image: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -25,10 +38,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Droplet',
     bgColor: 'bg-gradient-to-br from-sky-50/90 to-blue-50/40 border-sky-200 text-sky-900',
     accentColor: 'border-sky-300 text-sky-700 focus:ring-sky-500',
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80',
     items: [
-      { id: 'plumb-1', name: 'Leaking Pipes Repair', description: 'Emergency repairs for visible pipe leaks, burst joints, and continuous drips.', price: 45, duration: '1 hr' },
-      { id: 'plumb-2', name: 'Drain Unclogging', description: 'Clearing stubborn blocks in kitchen sinks, bathtubs, or toilet lines using specialized equipment.', price: 40, duration: '1 hr' },
-      { id: 'plumb-3', name: 'Faucet & Tap Installation', description: 'Replacing old fixtures with premium new faucets, taps, and water valves.', price: 30, duration: '45 mins' },
+      { id: 'plumb-1', name: 'Leaking Pipes Repair', description: 'Emergency repairs for visible pipe leaks, burst joints, and continuous drips.', price: 45, duration: '1 hr', image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80' },
+      { id: 'plumb-2', name: 'Drain Unclogging', description: 'Clearing stubborn blocks in kitchen sinks, bathtubs, or toilet lines using specialized equipment.', price: 40, duration: '1 hr', image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=600&auto=format&fit=crop&q=80' },
+      { id: 'plumb-3', name: 'Faucet & Tap Installation', description: 'Replacing old fixtures with premium new faucets, taps, and water valves.', price: 30, duration: '45 mins', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -38,10 +52,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Zap',
     bgColor: 'bg-gradient-to-br from-amber-50/80 to-orange-50/30 border-amber-200 text-amber-950',
     accentColor: 'border-amber-300 text-amber-700 focus:ring-amber-500',
+    image: electricianImg,
     items: [
-      { id: 'elec-1', name: 'Light & Fan Installation', description: 'Secure mounting and wiring of chandeliers, smart bulbs, ceiling fans, or outdoor lights.', price: 25, duration: '30 mins' },
-      { id: 'elec-2', name: 'Appliance Repair & Setup', description: 'Troubleshooting and repair for microwaves, refrigerators, TV mounts, or washing machines.', price: 55, duration: '1.5 hrs' },
-      { id: 'elec-3', name: 'Short Circuit Diagnostic', description: 'Comprehensive trace and repair for tripping breakers, faulty switches, or humming sockets.', price: 60, duration: '1.5 hrs' },
+      { id: 'elec-1', name: 'Light & Fan Installation', description: 'Secure mounting and wiring of chandeliers, smart bulbs, ceiling fans, or outdoor lights.', price: 25, duration: '30 mins', image: electricianImg },
+      { id: 'elec-2', name: 'Appliance Repair & Setup', description: 'Troubleshooting and repair for microwaves, refrigerators, TV mounts, or washing machines.', price: 55, duration: '1.5 hrs', image: applianceImg },
+      { id: 'elec-3', name: 'Short Circuit Diagnostic', description: 'Comprehensive trace and repair for tripping breakers, faulty switches, or humming sockets.', price: 60, duration: '1.5 hrs', image: electricianImg },
     ]
   },
   {
@@ -51,10 +66,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Shirt',
     bgColor: 'bg-gradient-to-br from-purple-50/80 to-fuchsia-50/30 border-purple-200 text-purple-950',
     accentColor: 'border-purple-300 text-purple-700 focus:ring-purple-500',
+    image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=600&auto=format&fit=crop&q=80',
     items: [
-      { id: 'laund-1', name: 'Wash & Fold Bundle', description: 'Everyday wear wash, machine dry, and clean fold up to 10kg.', price: 20, duration: 'Same Day' },
-      { id: 'laund-2', name: 'Premium Dry Cleaning', description: 'Gentle solvent cleaning, pressing, and hanger packaging for suits, dresses, and heavy coats.', price: 12, duration: '2 Days' },
-      { id: 'laund-3', name: 'Steam Ironing Only', description: 'Removal of wrinkles from shirts, trousers, or linens using industrial-grade steam pressers.', price: 15, duration: 'Same Day' },
+      { id: 'laund-1', name: 'Wash & Fold Bundle', description: 'Everyday wear wash, machine dry, and clean fold up to 10kg.', price: 20, duration: 'Same Day', image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=600&auto=format&fit=crop&q=80' },
+      { id: 'laund-2', name: 'Premium Dry Cleaning', description: 'Gentle solvent cleaning, pressing, and hanger packaging for suits, dresses, and heavy coats.', price: 12, duration: '2 Days', image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600&auto=format&fit=crop&q=80' },
+      { id: 'laund-3', name: 'Steam Ironing Only', description: 'Removal of wrinkles from shirts, trousers, or linens using industrial-grade steam pressers.', price: 15, duration: 'Same Day', image: 'https://images.unsplash.com/photo-1489274495757-95c7c837b101?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -64,10 +80,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'ShoppingBag',
     bgColor: 'bg-gradient-to-br from-green-50/90 to-emerald-50/40 border-green-200 text-green-950',
     accentColor: 'border-green-300 text-green-700 focus:ring-green-500',
+    image: groceriesImg,
     items: [
-      { id: 'groc-1', name: 'Fresh Organic Produce Box', description: 'Seasonal mix of premium fresh vegetables, greens, and hand-picked local fruits.', price: 30, duration: 'Under 2 hrs' },
-      { id: 'groc-2', name: 'Daily Dairy & Breakfast Kit', description: 'One gallon organic milk, farmhouse eggs, freshly baked bread, premium butter, and local honey.', price: 25, duration: 'Under 2 hrs' },
-      { id: 'groc-3', name: 'Pantry Essentials Bundle', description: 'Curated bundle including premium olive oil, long-grain rice, whole-wheat pasta, and organic sauces.', price: 45, duration: 'Under 2 hrs' },
+      { id: 'groc-1', name: 'Fresh Organic Produce Box', description: 'Seasonal mix of premium fresh vegetables, greens, and hand-picked local fruits.', price: 30, duration: 'Under 2 hrs', image: groceriesImg },
+      { id: 'groc-2', name: 'Daily Dairy & Breakfast Kit', description: 'One gallon organic milk, farmhouse eggs, freshly baked bread, premium butter, and local honey.', price: 25, duration: 'Under 2 hrs', image: 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=600&auto=format&fit=crop&q=80' },
+      { id: 'groc-3', name: 'Pantry Essentials Bundle', description: 'Curated bundle including premium olive oil, long-grain rice, whole-wheat pasta, and organic sauces.', price: 45, duration: 'Under 2 hrs', image: 'https://images.unsplash.com/photo-1588854337221-4cf9fa96059c?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -77,10 +94,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'BookOpen',
     bgColor: 'bg-gradient-to-br from-[#FAF5EF] to-[#F1ECE4]/40 border-[#E8DFD4] text-[#543C30]',
     accentColor: 'border-[#D9C4B0] text-[#785035] focus:ring-[#785035]',
+    image: tuitionImg,
     items: [
-      { id: 'tuit-1', name: 'Primary Homework Support', description: 'Patient assistance with daily school assignments, reading, and foundational math.', price: 25, duration: '1.5 hrs' },
-      { id: 'tuit-2', name: 'STEM & Science Coaching', description: 'Interactive science experiments and fun math tutoring tailored to their curriculum.', price: 35, duration: '1.5 hrs' },
-      { id: 'tuit-3', name: 'Creative Arts & Languages', description: 'Enriching home tutoring for English/Kiswahili reading comprehension and creative painting.', price: 30, duration: '1.5 hrs' },
+      { id: 'tuit-1', name: 'Primary Homework Support', description: 'Patient assistance with daily school assignments, reading, and foundational math.', price: 25, duration: '1.5 hrs', image: tuitionImg },
+      { id: 'tuit-2', name: 'STEM & Science Coaching', description: 'Interactive science experiments and fun math tutoring tailored to their curriculum.', price: 35, duration: '1.5 hrs', image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&auto=format&fit=crop&q=80' },
+      { id: 'tuit-3', name: 'Creative Arts & Languages', description: 'Enriching home tutoring for English/Kiswahili reading comprehension and creative painting.', price: 30, duration: '1.5 hrs', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -90,10 +108,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Tv',
     bgColor: 'bg-gradient-to-br from-indigo-50/90 to-violet-50/30 border-indigo-200 text-indigo-950',
     accentColor: 'border-indigo-300 text-indigo-700 focus:ring-indigo-500',
+    image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&auto=format&fit=crop&q=80',
     items: [
-      { id: 'tv-1', name: 'Standard TV Mounting', description: 'Secure installation on drywall, plaster, or masonry for TVs up to 55 inches (bracket not included).', price: 40, duration: '1 hr' },
-      { id: 'tv-2', name: 'Premium Heavy-Duty Mounting', description: 'Full-motion articulation brackets for large displays up to 85 inches with stud tracking.', price: 65, duration: '1.5 hrs' },
-      { id: 'tv-3', name: 'Wire Concealment Upgrade', description: 'In-wall cord routing or neat exterior trunking channels for a completely cable-free aesthetic.', price: 30, duration: '45 mins' },
+      { id: 'tv-1', name: 'Standard TV Mounting', description: 'Secure installation on drywall, plaster, or masonry for TVs up to 55 inches (bracket not included).', price: 40, duration: '1 hr', image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&auto=format&fit=crop&q=80' },
+      { id: 'tv-2', name: 'Premium Heavy-Duty Mounting', description: 'Full-motion articulation brackets for large displays up to 85 inches with stud tracking.', price: 65, duration: '1.5 hrs', image: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=600&auto=format&fit=crop&q=80' },
+      { id: 'tv-3', name: 'Wire Concealment Upgrade', description: 'In-wall cord routing or neat exterior trunking channels for a completely cable-free aesthetic.', price: 30, duration: '45 mins', image: 'https://images.unsplash.com/photo-1558888401-3cc1de77652d?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -103,10 +122,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Bug',
     bgColor: 'bg-gradient-to-br from-emerald-50/90 to-teal-50/30 border-emerald-200 text-emerald-950',
     accentColor: 'border-emerald-300 text-emerald-700 focus:ring-emerald-500',
+    image: 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=600&auto=format&fit=crop&q=80',
     items: [
-      { id: 'pest-1', name: 'General Crawling Insect Treatment', description: 'Safe, pet-friendly spraying targeting roaches, spiders, and ants in living areas and kitchen cabinets.', price: 50, duration: '1.5 hrs' },
-      { id: 'pest-2', name: 'Termite & Wood Protection', description: 'Specialized localized chemical treatment of door frames, cupboards, and ceiling timber.', price: 85, duration: '2 hrs' },
-      { id: 'pest-3', name: 'Rodent Exclusion & Baiting', description: 'Strategic placement of tamper-resistant bait stations and sealing of entry points around piping.', price: 45, duration: '1 hr' },
+      { id: 'pest-1', name: 'General Crawling Insect Treatment', description: 'Safe, pet-friendly spraying targeting roaches, spiders, and ants in living areas and kitchen cabinets.', price: 50, duration: '1.5 hrs', image: 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=600&auto=format&fit=crop&q=80' },
+      { id: 'pest-2', name: 'Termite & Wood Protection', description: 'Specialized localized chemical treatment of door frames, cupboards, and ceiling timber.', price: 85, duration: '2 hrs', image: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=600&auto=format&fit=crop&q=80' },
+      { id: 'pest-3', name: 'Rodent Exclusion & Baiting', description: 'Strategic placement of tamper-resistant bait stations and sealing of entry points around piping.', price: 45, duration: '1 hr', image: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=600&auto=format&fit=crop&q=80' },
     ]
   },
   {
@@ -116,10 +136,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Scissors',
     bgColor: 'bg-gradient-to-br from-rose-50/90 to-pink-50/30 border-rose-200 text-rose-950',
     accentColor: 'border-rose-300 text-rose-700 focus:ring-rose-500',
+    image: massageImg,
     items: [
-      { id: 'beauty-1', name: 'Signature Home Manicure & Pedicure', description: 'Nail shaping, cuticle care, scrub, warm oil massage, and long-lasting non-toxic polish.', price: 35, duration: '1.5 hrs' },
-      { id: 'beauty-2', name: 'Cozy Aromatherapy Massage', description: 'Deeply relaxing full-body tension relief using organic lavender and eucalyptus essential oils.', price: 60, duration: '1.5 hrs' },
-      { id: 'beauty-3', name: 'Senior Hair Grooming & Trim', description: 'Patient and caring haircut, trimming, and light styling for senior citizens in the comfort of their home.', price: 25, duration: '1 hr' },
+      { id: 'beauty-1', name: 'Signature Home Manicure & Pedicure', description: 'Nail shaping, cuticle care, scrub, warm oil massage, and long-lasting non-toxic polish.', price: 35, duration: '1.5 hrs', image: massageImg },
+      { id: 'beauty-2', name: 'Cozy Aromatherapy Massage', description: 'Deeply relaxing full-body tension relief using organic lavender and eucalyptus essential oils.', price: 60, duration: '1.5 hrs', image: massageImg },
+      { id: 'beauty-3', name: 'Senior Hair Grooming & Trim', description: 'Patient and caring haircut, trimming, and light styling for senior citizens in the comfort of their home.', price: 25, duration: '1 hr', image: seniorBarberImg },
     ]
   },
   {
@@ -129,10 +150,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Baby',
     bgColor: 'bg-gradient-to-br from-orange-50/90 to-amber-50/30 border-orange-200 text-orange-950',
     accentColor: 'border-orange-300 text-orange-700 focus:ring-orange-500',
+    image: childcareImg,
     items: [
-      { id: 'child-1', name: 'Express Babysitting (Under 4 hrs)', description: 'Attentive, engaging supervision including playtime, basic meal prep, and bedtime routines.', price: 40, duration: 'Up to 4 hrs' },
-      { id: 'child-2', name: 'Weekend Day Play & Learn Sitter', description: 'Active weekend childcare with creative arts, outdoor backyard games, and healthy lunch support.', price: 65, duration: '6 hrs' },
-      { id: 'child-3', name: 'Newborn & Infant Gentle Assistant', description: 'Highly experienced, specialized infant caregiver to assist with soothing, diapering, and nap schedules.', price: 55, duration: '4 hrs' },
+      { id: 'child-1', name: 'Express Babysitting (Under 4 hrs)', description: 'Attentive, engaging supervision including playtime, basic meal prep, and bedtime routines.', price: 40, duration: 'Up to 4 hrs', image: childcareImg },
+      { id: 'child-2', name: 'Weekend Day Play & Learn Sitter', description: 'Active weekend childcare with creative arts, outdoor backyard games, and healthy lunch support.', price: 65, duration: '6 hrs', image: childcareImg },
+      { id: 'child-3', name: 'Newborn & Infant Gentle Assistant', description: 'Highly experienced, specialized infant caregiver to assist with soothing, diapering, and nap schedules.', price: 55, duration: '4 hrs', image: childcareImg },
     ]
   },
   {
@@ -142,10 +164,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Truck',
     bgColor: 'bg-gradient-to-br from-slate-50 to-zinc-50 border-slate-250 text-slate-950',
     accentColor: 'border-slate-350 text-slate-700 focus:ring-slate-500',
+    image: movingImg,
     items: [
-      { id: 'move-1', name: 'Single Item / Large Appliance Move', description: 'Professional loading, safe strapping, and transit of one large item (e.g. double-door fridge, heavy sofa).', price: 35, duration: '1.5 hrs' },
-      { id: 'move-2', name: 'Estate Multi-Box Shifting Kit', description: 'Two strong helpers with a clean pickup truck to move up to 15 packed boxes, safely stacked and unloaded.', price: 70, duration: '2 hrs' },
-      { id: 'move-3', name: 'Furniture Assembly & Dismantling', description: 'Careful dismantling of beds, wardrobes, or dining tables at source and expert reassembly at destination.', price: 45, duration: '2 hrs' },
+      { id: 'move-1', name: 'Single Item / Large Appliance Move', description: 'Professional loading, safe strapping, and transit of one large item (e.g. double-door fridge, heavy sofa).', price: 35, duration: '1.5 hrs', image: movingImg },
+      { id: 'move-2', name: 'Estate Multi-Box Shifting Kit', description: 'Two strong helpers with a clean pickup truck to move up to 15 packed boxes, safely stacked and unloaded.', price: 70, duration: '2 hrs', image: movingImg },
+      { id: 'move-3', name: 'Furniture Assembly & Dismantling', description: 'Careful dismantling of beds, wardrobes, or dining tables at source and expert reassembly at destination.', price: 45, duration: '2 hrs', image: movingImg },
     ]
   },
   {
@@ -155,10 +178,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Droplet',
     bgColor: 'bg-gradient-to-br from-cyan-50/90 to-blue-50/30 border-cyan-200 text-cyan-950',
     accentColor: 'border-cyan-300 text-cyan-700 focus:ring-cyan-500',
+    image: waterUtilityImg,
     items: [
-      { id: 'water-1', name: 'Premium 20L Drinking Water Refill', description: 'Quick delivery of clean, mineral-enriched 20-liter drinking water bottles directly to your dispenser.', price: 10, duration: 'Under 1 hr' },
-      { id: 'water-2', name: 'Domestic Gas Cylinder Refill (13kg)', description: 'Safe transport, professional gas leak check, and delivery of standard 13kg cooking gas.', price: 35, duration: 'Under 1 hr' },
-      { id: 'water-3', name: 'Overhead Water Tank Sanitization', description: 'Drainage, complete scrubbing, disinfection, and pressure-washing of household water storage tanks.', price: 80, duration: '3 hrs' },
+      { id: 'water-1', name: 'Premium 20L Drinking Water Refill', description: 'Quick delivery of clean, mineral-enriched 20-liter drinking water bottles directly to your dispenser.', price: 10, duration: 'Under 1 hr', image: waterUtilityImg },
+      { id: 'water-2', name: 'Domestic Gas Cylinder Refill (13kg)', description: 'Safe transport, professional gas leak check, and delivery of standard 13kg cooking gas.', price: 35, duration: 'Under 1 hr', image: waterUtilityImg },
+      { id: 'water-3', name: 'Overhead Water Tank Sanitization', description: 'Drainage, complete scrubbing, disinfection, and pressure-washing of household water storage tanks.', price: 80, duration: '3 hrs', image: waterUtilityImg },
     ]
   },
   {
@@ -168,10 +192,11 @@ export const MOCK_SERVICES: ServiceCategory[] = [
     icon: 'Car',
     bgColor: 'bg-gradient-to-br from-blue-50/95 to-indigo-50/30 border-blue-200 text-blue-950',
     accentColor: 'border-blue-300 text-blue-700 focus:ring-blue-500',
+    image: carCareImg,
     items: [
-      { id: 'car-1', name: 'Premium Driveway Car Wash & Vacuum', description: 'Eco-friendly waterless body wash, wax finish, tyre shine, and thorough interior vacuuming in your parking spot.', price: 20, duration: '1.5 hrs' },
-      { id: 'car-2', name: 'Emergency Battery Jump & Diagnostic', description: 'Immediate dispatch of a technician with heavy cables, portable jump pack, and alternator voltage check.', price: 30, duration: '30 mins' },
-      { id: 'car-3', name: 'Weekly Engine Fluids & Tyre Check', description: 'Preventative maintenance inspection of engine oil, coolant, brake fluid, wiper fluid, and precise tyre pressure.', price: 15, duration: '30 mins' },
+      { id: 'car-1', name: 'Premium Driveway Car Wash & Vacuum', description: 'Eco-friendly waterless body wash, wax finish, tyre shine, and thorough interior vacuuming in your parking spot.', price: 20, duration: '1.5 hrs', image: carWashImg },
+      { id: 'car-2', name: 'Emergency Battery Jump & Diagnostic', description: 'Immediate dispatch of a technician with heavy cables, portable jump pack, and alternator voltage check.', price: 30, duration: '30 mins', image: carCareImg },
+      { id: 'car-3', name: 'Weekly Engine Fluids & Tyre Check', description: 'Preventative maintenance inspection of engine oil, coolant, brake fluid, wiper fluid, and precise tyre pressure.', price: 15, duration: '30 mins', image: carCareImg },
     ]
   }
 ];

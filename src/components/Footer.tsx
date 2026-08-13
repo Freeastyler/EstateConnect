@@ -1,11 +1,12 @@
 import React from 'react';
-import { ShieldCheck, Heart, Mail, Phone, MapPin } from 'lucide-react';
+import { ShieldCheck, Heart, Mail, Phone, MapPin, HelpCircle, FileText } from 'lucide-react';
 
 interface FooterProps {
   onSelectServiceCategory?: (categoryId: string) => void;
+  onOpenFaq?: () => void;
 }
 
-export default function Footer({ onSelectServiceCategory }: FooterProps) {
+export default function Footer({ onSelectServiceCategory, onOpenFaq }: FooterProps) {
   const handleServiceClick = (categoryId: string) => {
     if (onSelectServiceCategory) {
       onSelectServiceCategory(categoryId);
@@ -101,17 +102,52 @@ export default function Footer({ onSelectServiceCategory }: FooterProps) {
             </ul>
           </div>
 
-          {/* Quick links / policies */}
+          {/* Resident Guide & Support */}
           <div>
             <h3 className="text-white text-xs font-semibold uppercase tracking-wider mb-4">
-              Safety & Security
+              Resident Guide &amp; Support
             </h3>
             <ul className="space-y-2 text-xs">
-              <li><span className="hover:text-white transition-colors">Background Check Policy</span></li>
-              <li><span className="hover:text-white transition-colors">Gate Code Protocol</span></li>
-              <li><span className="hover:text-white transition-colors">Provider Code of Conduct</span></li>
-              <li><span className="hover:text-white transition-colors">Estate Security Guidelines</span></li>
-              <li><span className="hover:text-white transition-colors">Service Insurance Guarantee</span></li>
+              <li>
+                <button
+                  onClick={onOpenFaq}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Common Resident Questions
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onOpenFaq}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Gate Security &amp; Access Guide
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onOpenFaq}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Payments &amp; M-Pesa Receipts
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onOpenFaq}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Verified Helper Guarantee
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onOpenFaq}
+                  className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
+                >
+                  <span className="text-emerald-500">›</span> Custom Service Requests
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -127,7 +163,7 @@ export default function Footer({ onSelectServiceCategory }: FooterProps) {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-teal-400 shrink-0" />
-                <span>0141348178 (Call / WhatsApp)</span>
+                <span>0796502465 (Call / WhatsApp)</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-teal-400 shrink-0" />

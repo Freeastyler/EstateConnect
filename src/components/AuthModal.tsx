@@ -165,10 +165,10 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
       if (!userProfile) {
         const isDemoAdmin =
           normalizedEmail === 'f6144050@gmail.com' ||
-          (normalizedEmail === 'iankariri2@gmail.com' && password === 'Railways21323') ||
+          (normalizedEmail === 'admin@estateconnect.co.ke') ||
           (isLogin && loginRole === 'dispatcher');
 
-        const isDemoResident = normalizedEmail === 'iankariri2@gmail.com' && password !== 'Railways21323';
+        const isDemoResident = normalizedEmail === 'resident@estateconnect.co.ke' || normalizedEmail === 'iankariri2@gmail.com';
 
         const cleanName = isLogin
           ? (isDemoAdmin
@@ -214,7 +214,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
   };
 
   const loadDemoResident = () => {
-    setEmail('iankariri2@gmail.com');
+    setEmail('resident@estateconnect.co.ke');
     setPassword('password123');
     setIsLogin(true);
     setLoginRole('resident');
@@ -230,7 +230,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
   return (
     <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       <div 
-        className="bg-white rounded-3xl w-[94vw] sm:w-[420px] max-w-md max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-stone-200/80 my-auto animate-fade-in"
+        className="bg-white rounded-3xl w-[94vw] sm:w-[420px] max-w-md flex flex-col shadow-2xl border border-stone-200/80 my-auto animate-fade-in"
         id="auth-modal-card"
       >
         {/* Compact Friendly Header */}
@@ -295,8 +295,8 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
         {/* Mascot Greeting */}
         <WelcomeMascot loginRole={loginRole} isLogin={isLogin} />
 
-        {/* Scrollable Form Body */}
-        <div className="overflow-y-auto p-4 space-y-3 text-xs flex-1">
+        {/* Form Body */}
+        <div className="p-4 space-y-3 text-xs flex-1">
           <form onSubmit={handleSubmit} className="space-y-3">
             {error && (
               <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium rounded-xl">

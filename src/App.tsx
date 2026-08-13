@@ -6,6 +6,7 @@ import AdminDashboard from './components/AdminDashboard';
 import SpecialistRoster from './components/SpecialistRoster';
 import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
+import FaqModal from './components/FaqModal';
 import Toast, { ToastMessage } from './components/Toast';
 import { User, Booking, Provider } from './types';
 import { INITIAL_BOOKINGS, MOCK_PROVIDERS } from './mockData';
@@ -50,6 +51,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState<'landing' | 'client' | 'admin' | 'roster'>('landing');
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [faqModalOpen, setFaqModalOpen] = useState(false);
   const [selectedCategoryPreview, setSelectedCategoryPreview] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
@@ -88,7 +90,7 @@ export default function App() {
           } else {
             // Profile document doesn't exist yet, create default resident
             const cleanName = userAuth.email ? userAuth.email.split('@')[0] : 'Resident';
-            const isDemoAdmin = userAuth.email === 'f6144050@gmail.com' || userAuth.email === 'iankariri2@gmail.com';
+            const isDemoAdmin = userAuth.email === 'f6144050@gmail.com' || userAuth.email === 'admin@estateconnect.co.ke';
             
             const profile: User = {
               id: userAuth.uid,
@@ -141,14 +143,14 @@ export default function App() {
       : query(collection(db, 'bookings'), where('residentId', '==', currentUser.id));
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
-      if (snapshot.empty && currentUser.role === 'resident' && currentUser.email === 'iankariri2@gmail.com') {
-        // Automatically seed demo bookings for Ian to keep visual state rich
+      if (snapshot.empty && currentUser.role === 'resident' && (currentUser.email === 'resident@estateconnect.co.ke' || currentUser.email === 'iankariri2@gmail.com')) {
+        // Automatically seed demo bookings to keep visual state rich
         try {
           for (const b of INITIAL_BOOKINGS) {
             await setDoc(doc(db, 'bookings', b.id), b);
           }
         } catch (err) {
-          console.error("Error seeding initial bookings: ", err);
+          console.warn("Notice seeding initial bookings: ", err);
         }
       } else {
         const list: Booking[] = [];
@@ -157,10 +159,14 @@ export default function App() {
         });
         // Sort descending by createdAt
         list.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
-        setBookings(list);
+        setBookings(list.length > 0 ? list : (currentUser.role === 'resident' ? INITIAL_BOOKINGS : []));
       }
     }, (err) => {
-      console.error("Bookings subscription error: ", err);
+      console.warn("Bookings subscription notice:", err?.message || err);
+      // Fallback for rich display if offline or initial state
+      if (currentUser.role === 'resident') {
+        setBookings(INITIAL_BOOKINGS);
+      }
     });
 
     return () => unsubscribe();
@@ -178,21 +184,21 @@ export default function App() {
       : query(collection(db, 'messages'), where('userId', '==', currentUser.id));
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
-      if (snapshot.empty && currentUser.role === 'resident' && currentUser.email === 'iankariri2@gmail.com') {
+      if (snapshot.empty && currentUser.role === 'resident') {
         // Seed default welcome message
         try {
           const defaultMsg = {
             id: 'msg-default-1',
             userId: currentUser.id,
             title: 'Welcome to EstateConnect Portal! 🎉',
-            content: 'Hello Ian! Congratulations, sir, on joining EstateConnect! We are absolutely thrilled to have you as a verified member of our Fedha Estate family. We look forward to fulfilling your first service order with us and ensuring premium domestic assistance!',
+            content: `Hello ${currentUser.name || 'Resident'}! Welcome to EstateConnect. We are thrilled to have you as a verified member of our Fedha Estate community. We look forward to fulfilling your service requests with premium domestic assistance!`,
             createdAt: new Date().toISOString(),
             read: false,
             sender: 'Estate Administration'
           };
           await setDoc(doc(db, 'messages', 'msg-default-1'), defaultMsg);
         } catch (err) {
-          console.error("Error seeding messages: ", err);
+          console.warn("Notice seeding messages: ", err);
         }
       } else {
         const list: any[] = [];
@@ -203,7 +209,7 @@ export default function App() {
         setMessages(list);
       }
     }, (err) => {
-      console.error("Messages subscription error: ", err);
+      console.warn("Messages subscription notice:", err?.message || err);
     });
 
     return () => unsubscribe();
@@ -211,17 +217,15 @@ export default function App() {
 
   // 4. Real-time Providers (Specialists) synchronization & Auto-seeding
   useEffect(() => {
-    if (!currentUser) return;
-
     const unsubscribe = onSnapshot(collection(db, 'providers'), async (snapshot) => {
-      if (snapshot.empty && currentUser.role === 'admin') {
+      if (snapshot.empty && currentUser && currentUser.role === 'admin') {
         // Automatically seed providers if empty and user is admin
         try {
           for (const prov of MOCK_PROVIDERS) {
             await setDoc(doc(db, 'providers', prov.id), prov);
           }
         } catch (err) {
-          console.error("Error seeding providers database: ", err);
+          console.warn("Notice seeding providers database: ", err);
         }
       } else {
         const list: Provider[] = [];
@@ -231,7 +235,8 @@ export default function App() {
         setProviders(list.length > 0 ? list : MOCK_PROVIDERS);
       }
     }, (err) => {
-      console.error("Providers subscription error: ", err);
+      console.warn("Providers subscription notice:", err?.message || err);
+      setProviders(MOCK_PROVIDERS);
     });
 
     return () => unsubscribe();
@@ -349,7 +354,7 @@ export default function App() {
 
     try {
       await setDoc(doc(db, 'bookings', bookingId), booking);
-      triggerToast(`Booking ${bookingId} requested! Awaiting price quote from dispatchers.`, 'success');
+      triggerToast(`Order ${bookingId} received! Please wait for updates as we review your request.`, 'success');
     } catch (err) {
       console.error("Error adding booking:", err);
       triggerToast("Failed to request booking.", "error");
@@ -562,13 +567,21 @@ export default function App() {
       </main>
 
       {/* Footer component */}
-      <Footer onSelectServiceCategory={handleSelectCategoryPreview} />
+      <Footer 
+        onSelectServiceCategory={handleSelectCategoryPreview}
+        onOpenFaq={() => setFaqModalOpen(true)}
+      />
 
       {/* Popups & Dialogs */}
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         onAuthSuccess={handleAuthSuccess}
+      />
+
+      <FaqModal
+        isOpen={faqModalOpen}
+        onClose={() => setFaqModalOpen(false)}
       />
 
       {/* Floating notifications */}
