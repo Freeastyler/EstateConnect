@@ -294,7 +294,7 @@ export default function LandingPage({ onOpenAuth, onSelectCategoryPreview }: Lan
                   {/* Badge */}
                   <span className="absolute top-3 right-3 bg-slate-900/90 backdrop-blur-md text-teal-300 border border-teal-500/30 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-                    Nairobi Verified
+                    Verified
                   </span>
                 </div>
 
