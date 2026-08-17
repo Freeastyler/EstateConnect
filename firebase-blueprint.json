@@ -5,11 +5,18 @@
         "id": { "type": "string" },
         "name": { "type": "string" },
         "email": { "type": "string" },
+        "password": { "type": "string", "optional": true },
         "role": { "type": "string" },
         "phone": { "type": "string", "optional": true },
         "gender": { "type": "string", "optional": true },
         "houseDetails": { "type": "string", "optional": true },
         "estateName": { "type": "string", "optional": true },
+        "specialty": { "type": "string", "optional": true },
+        "experienceYears": { "type": "string", "optional": true },
+        "coverageArea": { "type": "string", "optional": true },
+        "nationalId": { "type": "string", "optional": true },
+        "onDuty": { "type": "boolean", "optional": true },
+        "rating": { "type": "number", "optional": true },
         "createdAt": { "type": "string" }
       }
     },
@@ -53,6 +60,22 @@
         "createdAt": { "type": "string" },
         "read": { "type": "boolean" },
         "sender": { "type": "string" }
+      }
+    },
+    "providerApplications": {
+      "fields": {
+        "applicationRef": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "nationalId": { "type": "string" },
+        "specialty": { "type": "string" },
+        "experienceYears": { "type": "string" },
+        "coverageArea": { "type": "string" },
+        "availability": { "type": "string" },
+        "bio": { "type": "string", "optional": true },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
       }
     }
   }

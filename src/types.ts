@@ -37,15 +37,24 @@ export interface Booking {
   createdAt: string;
 }
 
+export type UserRole = 'resident' | 'admin' | 'provider';
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'resident' | 'admin';
+  role: UserRole;
   estateName?: string;
   houseDetails?: string;
   phone?: string;
   gender?: 'male' | 'female' | 'other';
+  specialty?: string;
+  experienceYears?: string;
+  coverageArea?: string;
+  nationalId?: string;
+  onDuty?: boolean;
+  rating?: number;
+  password?: string;
   createdAt?: string;
 }
 

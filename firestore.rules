@@ -20,5 +20,10 @@ service cloud.firestore {
     match /messages/{messageId} {
       allow read, write: if true;
     }
+    
+    // Provider Applications collection rules
+    match /providerApplications/{applicationId} {
+      allow read, write: if true;
+    }
   }
 }

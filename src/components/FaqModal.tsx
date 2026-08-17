@@ -1,12 +1,13 @@
 import React from 'react';
-import { X, HelpCircle, Phone, Heart } from 'lucide-react';
+import { X, HelpCircle, Phone, Heart, Briefcase } from 'lucide-react';
 
 interface FaqModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenProviderApply?: () => void;
 }
 
-export default function FaqModal({ isOpen, onClose }: FaqModalProps) {
+export default function FaqModal({ isOpen, onClose, onOpenProviderApply }: FaqModalProps) {
   if (!isOpen) return null;
 
   const faqs = [
@@ -113,6 +114,21 @@ export default function FaqModal({ isOpen, onClose }: FaqModalProps) {
                 <p className="text-xs text-slate-700 leading-relaxed pl-7 font-medium">
                   {faq.a}
                 </p>
+                {index === 10 && onOpenProviderApply && (
+                  <div className="pl-7 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onClose();
+                        onOpenProviderApply();
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2545] hover:bg-[#071b33] text-amber-300 font-bold text-[11px] rounded transition-all cursor-pointer border-b-2 border-amber-500 uppercase tracking-wider font-mono shadow-xs"
+                    >
+                      <Briefcase className="h-3.5 w-3.5" />
+                      Apply as a Professional Specialist Now
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

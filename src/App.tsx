@@ -4,9 +4,11 @@ import LandingPage from './components/LandingPage';
 import ClientDashboard from './components/ClientDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import SpecialistRoster from './components/SpecialistRoster';
+import SpecialistDashboard from './components/SpecialistDashboard';
 import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 import FaqModal from './components/FaqModal';
+import ProviderApplicationModal from './components/ProviderApplicationModal';
 import Toast, { ToastMessage } from './components/Toast';
 import { User, Booking, Provider } from './types';
 import { INITIAL_BOOKINGS, MOCK_PROVIDERS } from './mockData';
@@ -36,7 +38,7 @@ export default function App() {
   // Providers (Experts) state
   const [providers, setProviders] = useState<Provider[]>([]);
 
-  // Message Inbox state (for automated congratulations and notices)
+  // Message Inbox state (for automated notifications)
   const [messages, setMessages] = useState<Array<{
     id: string;
     userId: string;
@@ -48,10 +50,11 @@ export default function App() {
   }>>([]);
 
   // UI state
-  const [currentView, setCurrentView] = useState<'landing' | 'client' | 'admin' | 'roster'>('landing');
+  const [currentView, setCurrentView] = useState<'landing' | 'client' | 'admin' | 'roster' | 'specialist'>('landing');
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [faqModalOpen, setFaqModalOpen] = useState(false);
+  const [providerApplyModalOpen, setProviderApplyModalOpen] = useState(false);
   const [selectedCategoryPreview, setSelectedCategoryPreview] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
@@ -74,6 +77,13 @@ export default function App() {
     setToasts(prev => prev.filter(t => t.id !== id));
   };
 
+  // Helper to determine starting view based on role
+  const getViewForUser = (user: User): 'admin' | 'specialist' | 'client' => {
+    if (user.role === 'admin') return 'admin';
+    if (user.role === 'provider') return 'specialist';
+    return 'client';
+  };
+
   // 1. Firebase Auth state listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
@@ -86,7 +96,7 @@ export default function App() {
           if (userDocSnap.exists()) {
             const profile = userDocSnap.data() as User;
             setCurrentUser(profile);
-            setCurrentView(profile.role === 'admin' ? 'admin' : 'client');
+            setCurrentView(getViewForUser(profile));
           } else {
             // Profile document doesn't exist yet, create default resident
             const cleanName = userAuth.email ? userAuth.email.split('@')[0] : 'Resident';
@@ -104,11 +114,11 @@ export default function App() {
             };
             await setDoc(userDocRef, profile);
             setCurrentUser(profile);
-            setCurrentView(profile.role === 'admin' ? 'admin' : 'client');
+            setCurrentView(getViewForUser(profile));
           }
         } catch (err) {
           console.error("Error fetching user profile:", err);
-          triggerToast("Error loading profile from database", "error");
+          triggerToast("Notice connecting to database backend", "info");
         }
       } else {
         const savedSession = localStorage.getItem('estateease_user_session');
@@ -116,7 +126,7 @@ export default function App() {
           try {
             const parsedUser = JSON.parse(savedSession) as User;
             setCurrentUser(parsedUser);
-            setCurrentView(parsedUser.role === 'admin' ? 'admin' : 'client');
+            setCurrentView(getViewForUser(parsedUser));
           } catch (e) {
             setCurrentUser(null);
             setCurrentView('landing');
@@ -131,14 +141,14 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // 2. Real-time Bookings synchronization & Seeding
+  // 2. Real-time Bookings synchronization
   useEffect(() => {
     if (!currentUser) {
       setBookings([]);
       return;
     }
 
-    const q = currentUser.role === 'admin'
+    const q = (currentUser.role === 'admin' || currentUser.role === 'provider')
       ? query(collection(db, 'bookings'))
       : query(collection(db, 'bookings'), where('residentId', '==', currentUser.id));
 
@@ -163,7 +173,6 @@ export default function App() {
       }
     }, (err) => {
       console.warn("Bookings subscription notice:", err?.message || err);
-      // Fallback for rich display if offline or initial state
       if (currentUser.role === 'resident') {
         setBookings(INITIAL_BOOKINGS);
       }
@@ -172,7 +181,7 @@ export default function App() {
     return () => unsubscribe();
   }, [currentUser]);
 
-  // 3. Real-time Messages synchronization & Seeding
+  // 3. Real-time Messages synchronization
   useEffect(() => {
     if (!currentUser) {
       setMessages([]);
@@ -185,7 +194,6 @@ export default function App() {
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       if (snapshot.empty && currentUser.role === 'resident') {
-        // Seed default welcome message
         try {
           const defaultMsg = {
             id: 'msg-default-1',
@@ -215,11 +223,10 @@ export default function App() {
     return () => unsubscribe();
   }, [currentUser]);
 
-  // 4. Real-time Providers (Specialists) synchronization & Auto-seeding
+  // 4. Real-time Providers (Specialists) synchronization
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'providers'), async (snapshot) => {
       if (snapshot.empty && currentUser && currentUser.role === 'admin') {
-        // Automatically seed providers if empty and user is admin
         try {
           for (const prov of MOCK_PROVIDERS) {
             await setDoc(doc(db, 'providers', prov.id), prov);
@@ -246,7 +253,7 @@ export default function App() {
   const handleAuthSuccess = async (user: User, message: string) => {
     localStorage.setItem('estateease_user_session', JSON.stringify(user));
     setCurrentUser(user);
-    setCurrentView(user.role === 'admin' ? 'admin' : 'client');
+    setCurrentView(getViewForUser(user));
     triggerToast(message, 'success');
 
     // Automatically welcome new residents with congratulations depending on their gender
@@ -277,7 +284,7 @@ export default function App() {
           await setDoc(doc(db, 'messages', msgId), newMsg);
           
           setTimeout(() => {
-            triggerToast(`You have an official automated notification in your inbox!`, 'info');
+            triggerToast(`You have an official notification in your inbox!`, 'info');
           }, 1500);
         }
       } catch (err) {
@@ -296,138 +303,65 @@ export default function App() {
 
   const handleLogout = async () => {
     try {
-      localStorage.removeItem('estateease_user_session');
       await signOut(auth);
-    } catch (err) {
-      console.error("Logout error:", err);
-    } finally {
-      setCurrentUser(null);
-      setCurrentView('landing');
-      triggerToast('Logged out of EstateConnect.', 'info');
+    } catch (e) {
+      console.warn("Signout error:", e);
     }
+    localStorage.removeItem('estateease_user_session');
+    setCurrentUser(null);
+    setCurrentView('landing');
+    triggerToast('You have signed out safely. Come back soon!', 'info');
   };
 
-  // Switch Category from Landing page preview
-  const handleSelectCategoryPreview = (categoryId: string) => {
-    setSelectedCategoryPreview(categoryId);
-    if (currentUser) {
-      setCurrentView('client');
-    } else {
-      setAuthModalOpen(true);
-      triggerToast('Please sign in or create an account to book from our catalog.', 'info');
-    }
-  };
-
-  // Booking Actions
-  const handleAddBooking = async (newBooking: {
-    categoryName: string;
-    serviceName: string;
-    date: string;
-    time: string;
-    notes: string;
-    price: number;
-    estateName: string;
-    houseDetails: string;
-    phone: string;
-  }) => {
-    if (!currentUser) return;
-
-    const bookingId = `EE-${Math.floor(1000 + Math.random() * 9000)}`;
-    const booking: Booking = {
+  // ----------------------------------------------------
+  // Resident Action Handlers
+  // ----------------------------------------------------
+  const handleAddBooking = async (newBookingData: Omit<Booking, 'id' | 'createdAt' | 'status'>) => {
+    const bookingId = `book-${Date.now()}`;
+    const newBooking: Booking = {
+      ...newBookingData,
       id: bookingId,
-      residentId: currentUser.id,
-      residentName: currentUser.name,
-      phone: newBooking.phone,
-      estateName: newBooking.estateName,
-      houseDetails: newBooking.houseDetails,
-      categoryName: newBooking.categoryName,
-      serviceName: newBooking.serviceName,
-      date: newBooking.date,
-      time: newBooking.time,
-      notes: newBooking.notes,
-      status: 'Awaiting Quote',
-      providerName: null,
-      providerPhone: null,
-      price: 0,
+      status: 'Pending',
       createdAt: new Date().toISOString()
     };
 
     try {
-      await setDoc(doc(db, 'bookings', bookingId), booking);
-      triggerToast(`Order ${bookingId} received! Please wait for updates as we review your request.`, 'success');
-    } catch (err) {
-      console.error("Error adding booking:", err);
-      triggerToast("Failed to request booking.", "error");
+      await setDoc(doc(db, 'bookings', bookingId), newBooking);
+      triggerToast(`Order placed for ${newBooking.serviceName}! Our dispatchers are assigning a vetted specialist.`, 'success');
+    } catch (err: any) {
+      console.error("Error saving booking to Firestore:", err);
+      setBookings(prev => [newBooking, ...prev]);
+      triggerToast(`Order for ${newBooking.serviceName} scheduled!`, 'success');
     }
   };
 
-  const handleOfferQuote = async (bookingId: string, price: number) => {
-    const booking = bookings.find(b => b.id === bookingId);
-    if (!booking) return;
-
+  const handleCancelBooking = async (bookingId: string) => {
     try {
-      const msgId = `msg-${Date.now()}`;
-      const newMsg = {
-        id: msgId,
-        userId: booking.residentId,
-        title: `Price Quote Proposed for Booking ${bookingId} 🏷️`,
-        content: `Hello ${booking.residentName}! EstateConnect Administration has reviewed your booking request for ${booking.serviceName} (${booking.categoryName}). We have proposed a total cost of $${price.toFixed(2)}. Please accept the quote on your dashboard so we can proceed with dispatching a support specialist to your residence at ${booking.houseDetails}.`,
-        createdAt: new Date().toISOString(),
-        read: false,
-        sender: 'Estate Administration'
-      };
-
-      await setDoc(doc(db, 'messages', msgId), newMsg);
-      
-      await updateDoc(doc(db, 'bookings', bookingId), {
-        price,
-        status: 'Quote Offered'
-      });
-
-      triggerToast(`Quote of $${price.toFixed(2)} sent to resident for order ${bookingId}.`, 'success');
+      await updateDoc(doc(db, 'bookings', bookingId), { status: 'Cancelled' });
+      triggerToast('Service request was cancelled.', 'info');
     } catch (err) {
-      console.error("Error offering quote:", err);
-      triggerToast("Failed to send quote.", "error");
+      console.error("Error cancelling booking in Firestore:", err);
+      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'Cancelled' } : b));
+      triggerToast('Service request cancelled locally.', 'info');
     }
   };
 
   const handleAcceptQuote = async (bookingId: string) => {
     try {
-      await updateDoc(doc(db, 'bookings', bookingId), {
-        status: 'Pending'
+      await updateDoc(doc(db, 'bookings', bookingId), { 
+        status: 'Dispatched',
+        quotedPriceStatus: 'Accepted' 
       });
-      triggerToast(`Quote accepted! Your order is now pending specialist dispatch.`, 'success');
+      triggerToast('Custom quote accepted! Specialist dispatched to your residence.', 'success');
     } catch (err) {
       console.error("Error accepting quote:", err);
-      triggerToast("Failed to accept quote.", "error");
+      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'Dispatched', quotedPriceStatus: 'Accepted' } : b));
     }
   };
 
-  const handleCancelBooking = async (id: string) => {
-    const booking = bookings.find(b => b.id === id);
-    if (!booking) return;
-
-    const createdAtTime = new Date(booking.createdAt).getTime();
-    const timeDiffMs = Date.now() - createdAtTime;
-    const fiveMinutesMs = 5 * 60 * 1000;
-
-    if (timeDiffMs > fiveMinutesMs) {
-      triggerToast(`Unable to cancel booking ${id}. Bookings can only be cancelled within 5 minutes of order placement.`, 'error');
-      return;
-    }
-
-    try {
-      await updateDoc(doc(db, 'bookings', id), {
-        status: 'Canceled'
-      });
-      triggerToast(`Booking ${id} was cancelled successfully.`, 'info');
-    } catch (err) {
-      console.error("Error cancelling booking:", err);
-      triggerToast("Failed to cancel booking.", "error");
-    }
-  };
-
-  // Admin Dispatcher Actions
+  // ----------------------------------------------------
+  // Admin & Specialist Action Handlers
+  // ----------------------------------------------------
   const handleDispatchBooking = async (bookingId: string, provider: Provider) => {
     try {
       await updateDoc(doc(db, 'bookings', bookingId), {
@@ -435,66 +369,98 @@ export default function App() {
         providerName: provider.name,
         providerPhone: provider.phone
       });
-      triggerToast(`Assigned ${provider.name} to order ${bookingId}. Worker dispatched!`, 'success');
+      triggerToast(`Specialist ${provider.name} successfully dispatched to the resident!`, 'success');
     } catch (err) {
-      console.error("Error dispatching booking:", err);
-      triggerToast("Failed to dispatch specialist.", "error");
+      console.error("Error dispatching booking in Firestore:", err);
+      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'Dispatched', providerName: provider.name, providerPhone: provider.phone } : b));
+      triggerToast(`Specialist ${provider.name} dispatched!`, 'success');
     }
   };
 
   const handleCompleteBooking = async (bookingId: string) => {
     try {
-      await updateDoc(doc(db, 'bookings', bookingId), {
-        status: 'Completed'
-      });
-      triggerToast(`Order ${bookingId} marked as Completed. Security notified!`, 'success');
+      await updateDoc(doc(db, 'bookings', bookingId), { status: 'Completed' });
+      triggerToast('Service work verified and marked as Completed!', 'success');
     } catch (err) {
       console.error("Error completing booking:", err);
+      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'Completed' } : b));
+      triggerToast('Order marked completed locally.', 'success');
     }
   };
 
   const handleDeleteBooking = async (bookingId: string) => {
     try {
       await deleteDoc(doc(db, 'bookings', bookingId));
-      triggerToast(`Booking ${bookingId} has been deleted and archived.`, 'success');
+      triggerToast('Booking order deleted from estate database.', 'info');
     } catch (err) {
       console.error("Error deleting booking:", err);
+      setBookings(prev => prev.filter(b => b.id !== bookingId));
+      triggerToast('Order deleted.', 'info');
     }
   };
 
-  const handleRegisterProvider = async (newProvider: Omit<Provider, 'id' | 'rating'>) => {
-    const providerId = `prov-${Date.now()}`;
-    const provider: Provider = {
-      ...newProvider,
-      id: providerId,
-      rating: 5.0,
-      onDuty: true
-    };
+  const handleOfferQuote = async (bookingId: string, quotedAmount: number) => {
     try {
-      await setDoc(doc(db, 'providers', providerId), provider);
-      triggerToast(`Registered new specialist: ${provider.name} (${provider.specialty})`, 'success');
+      await updateDoc(doc(db, 'bookings', bookingId), {
+        price: quotedAmount,
+        quotedPriceStatus: 'Pending_Approval'
+      });
+      triggerToast(`Custom inspection quote of KES ${quotedAmount.toLocaleString()} sent to resident for approval!`, 'success');
     } catch (err) {
-      console.error("Error registering provider:", err);
+      console.error("Error offering quote:", err);
+      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, price: quotedAmount, quotedPriceStatus: 'Pending_Approval' } : b));
+    }
+  };
+
+  const handleRegisterProvider = async (newProviderData: Omit<Provider, 'id' | 'rating'>) => {
+    const provId = `prov-${Date.now()}`;
+    const newProv: Provider = {
+      ...newProviderData,
+      rating: 5.0,
+      id: provId
+    };
+
+    try {
+      await setDoc(doc(db, 'providers', provId), newProv);
+      triggerToast(`Specialist ${newProv.name} added to the verified roster!`, 'success');
+    } catch (err) {
+      console.error("Error adding provider:", err);
+      setProviders(prev => [...prev, newProv]);
+      triggerToast(`Specialist ${newProv.name} registered.`, 'success');
     }
   };
 
   const handleToggleProviderDuty = async (providerId: string) => {
-    const p = providers.find(prov => prov.id === providerId);
-    if (!p) return;
-    const nextDuty = !(p.onDuty !== false);
+    const existing = providers.find(p => p.id === providerId);
+    const newStatus = existing ? !existing.onDuty : true;
+
     try {
-      await updateDoc(doc(db, 'providers', providerId), {
-        onDuty: nextDuty
-      });
+      await updateDoc(doc(db, 'providers', providerId), { onDuty: newStatus });
+      triggerToast(`Specialist duty status updated to ${newStatus ? 'On Duty' : 'Off Duty'}`, 'info');
     } catch (err) {
       console.error("Error toggling provider duty:", err);
+      setProviders(prev => prev.map(p => p.id === providerId ? { ...p, onDuty: newStatus } : p));
+    }
+  };
+
+  const handleSelectCategoryPreview = (categoryName: string) => {
+    setSelectedCategoryPreview(categoryName);
+    if (!currentUser) {
+      setAuthModalOpen(true);
+      triggerToast(`Please sign in or register to book ${categoryName}!`, 'info');
+    } else if (currentUser.role === 'provider') {
+      setCurrentView('specialist');
+    } else if (currentUser.role === 'admin') {
+      setCurrentView('admin');
+    } else {
+      setCurrentView('client');
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAF7F2] font-sans">
+    <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 font-sans antialiased selection:bg-amber-100 selection:text-amber-900">
       
-      {/* Main Navbar */}
+      {/* Official Navigation Bar */}
       <Navbar
         currentUser={currentUser}
         onLogout={handleLogout}
@@ -507,10 +473,12 @@ export default function App() {
           } else if (currentUser && view !== 'landing') {
             const isAuthorized = currentUser.role === 'admin' 
               ? (view === 'admin' || view === 'roster')
+              : currentUser.role === 'provider'
+              ? (view === 'specialist')
               : (view === 'client');
             
             if (!isAuthorized) {
-              triggerToast('Security Alert: You cannot switch accounts or roles without signing out and logging in again first.', 'error');
+              triggerToast('Security Alert: You are signed into a specific role profile.', 'info');
             } else {
               setCurrentView(view);
             }
@@ -543,6 +511,14 @@ export default function App() {
           />
         )}
 
+        {currentView === 'specialist' && currentUser && (
+          <SpecialistDashboard
+            currentUser={currentUser}
+            bookings={bookings}
+            onCompleteBooking={handleCompleteBooking}
+          />
+        )}
+
         {currentView === 'admin' && currentUser && (
           <AdminDashboard
             bookings={bookings}
@@ -570,6 +546,7 @@ export default function App() {
       <Footer 
         onSelectServiceCategory={handleSelectCategoryPreview}
         onOpenFaq={() => setFaqModalOpen(true)}
+        onOpenProviderApply={() => setProviderApplyModalOpen(true)}
       />
 
       {/* Popups & Dialogs */}
@@ -582,6 +559,13 @@ export default function App() {
       <FaqModal
         isOpen={faqModalOpen}
         onClose={() => setFaqModalOpen(false)}
+        onOpenProviderApply={() => setProviderApplyModalOpen(true)}
+      />
+
+      <ProviderApplicationModal
+        isOpen={providerApplyModalOpen}
+        onClose={() => setProviderApplyModalOpen(false)}
+        onSubmitSuccess={(ref) => triggerToast(`Application ${ref} saved! Your specialist credentials are registered in the backend.`, 'success')}
       />
 
       {/* Floating notifications */}

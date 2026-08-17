@@ -1,12 +1,13 @@
 import React from 'react';
-import { ShieldCheck, Heart, Mail, Phone, MapPin, HelpCircle, FileText } from 'lucide-react';
+import { ShieldCheck, Heart, Mail, Phone, MapPin, HelpCircle, FileText, Briefcase, UserPlus } from 'lucide-react';
 
 interface FooterProps {
   onSelectServiceCategory?: (categoryId: string) => void;
   onOpenFaq?: () => void;
+  onOpenProviderApply?: () => void;
 }
 
-export default function Footer({ onSelectServiceCategory, onOpenFaq }: FooterProps) {
+export default function Footer({ onSelectServiceCategory, onOpenFaq, onOpenProviderApply }: FooterProps) {
   const handleServiceClick = (categoryId: string) => {
     if (onSelectServiceCategory) {
       onSelectServiceCategory(categoryId);
@@ -146,6 +147,21 @@ export default function Footer({ onSelectServiceCategory, onOpenFaq }: FooterPro
                   className="hover:text-emerald-400 text-slate-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-medium"
                 >
                   <span className="text-emerald-500">›</span> Custom Service Requests
+                </button>
+              </li>
+              <li className="pt-2 border-t border-slate-800">
+                <button
+                  onClick={onOpenProviderApply}
+                  id="footer-apply-professional-btn"
+                  className="w-full flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-slate-800/40 hover:bg-slate-800 border border-slate-700/50 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 transition-all cursor-pointer group text-xs"
+                >
+                  <span className="flex items-center gap-2">
+                    <Briefcase className="h-3.5 w-3.5 text-teal-400 shrink-0 group-hover:scale-105 transition-transform" />
+                    <span className="font-medium">Register as Professional</span>
+                  </span>
+                  <span className="text-[11px] text-teal-400 font-medium group-hover:translate-x-0.5 transition-transform">
+                    Apply →
+                  </span>
                 </button>
               </li>
             </ul>
